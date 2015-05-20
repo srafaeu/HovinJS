@@ -1,0 +1,25 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+canvas {
+	background-color: #FFF;
+}
+
+div#debug {
+	margin: 0;
+	padding: 10px;
+	display: block;
+	width: 280px;
+	height: 180px;
+	overflow: hidden;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	background-color: #444;
+	font-family: Courier New, sans-serif;
+	font-size: 11px;
+	color: #FEFEFE;
+	border: 1px solid #000;
+}

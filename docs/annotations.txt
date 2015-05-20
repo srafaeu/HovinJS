@@ -1,0 +1,153 @@
+=HovinJS=
+
+Engine de game em Canvas
+
+==Elementos essenciais==
+* Vetor, Ponto, tamanho e outros elementos básicos;
+* Formas (retângulo, elipse, polígonos, traços etc.);
+* Cor, gradiente e padrão de textura;
+* Eventos (teclado, mouse, touch etc.);
+* Render, Timer, Random;
+* Sprite com animação baseada em tempo;
+* Steering behavior;
+* Colisões e física;
+* Som e efeitos sonoros, fonte, partículas;
+* Mundo, conversão de medidas 
+
+==Documentação==
+https://github.com/jsdoc3/jsdoc
+http://usejsdoc.org/about-getting-started.html
+
+
+Verificar nas classes:
+* Getters and Setters
+* Serialização
+* Deserialização
+* Documentação
+
+== Versão 1 ==
+
+Basics
++ Angle
++ Vector2
++ Point2
++ Size
++ Random
++ BoundingBox
+
+Files
++ Texture
+
+Styles
++ Color
++ Gradient
++ Pattern
++ Stroke
++ Font
+
+Events
++ Keyboard
++ Mouse
+
+Gaming
+- World
+- Render
+- Timer
+- Sprite
+- SpriteAnimation
+- SteeringBehavior
+
+Managers
+- TextureManager
+- FontManager
+
+== Versão 2 ==
+
+Basics
+- Vector3
+- Point3
+
+Files
+- Audio
+- File
+
+Events
+- Touch
+
+Managers
+- AudioManager
+- FileManager
+
+Graphics
+- Particle
+- Emitter
+
+Physics
+- Field
+
+Shapes
+- Rectangle
+- Square
+- Ellipse
+- Circle
+- Path
+- Polygon
+- Text
+
+
+== Versão completa ==
+
+Basics
++ Vector2
++ Point2
++ Size
++ Random
+- Vector3
+- Point3
+
+Files
++ Texture
+- Audio
+- File
+
+Styles
++ Color
++ Gradient
++ Pattern
++ Stroke
++ Font
+
+Shapes
++ Rectangle
++ Square
++ Ellipse
++ Circle
++ Path
++ Polygon
++ Text
+
+Events
++ Keyboard
++ Mouse
+- Touch
+
+Gaming
+- Render
+- Timer
+
+Managers
+- TextureManager
+- AudioManager
+- FontManager
+- FileManager
+
+Graphics
+- Sprite
+- Particle
+- Emitter
+
+Physics
+- Field
+
+Intelligence
+- SteeringBehavior
