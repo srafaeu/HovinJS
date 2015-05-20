@@ -34,7 +34,7 @@ function debug(text, clear) {
 	var dbg = getDebugWindow();
 	if (clear)
 		dbg.innerHTML = "";
-	dbg.innerHTML += text;
+	dbg.innerHTML += text.replace(/\n/g, '<br />');
 }
 
 function getDebugWindow() {
