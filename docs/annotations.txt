@@ -16,7 +16,7 @@ Engine de game em Canvas
 
 ==Documentação==
 https://github.com/jsdoc3/jsdoc
-http://usejsdoc.org/about-getting-started.html
+http://usejsdoc.org/
 
 
 Verificar nas classes:

@@ -1,3 +1,32 @@
+
+if (typeof Object.create !== 'function') {
+	Object.create = function (o) {
+		function F() {}
+		F.prototype = o;
+		return new F();
+	};
+}
+
+if (typeof Object.prototype.merge !== 'function') {
+	Object.prototype.merge = function(obj, overwrite) {
+		var attribute, c = {};
+		if (overwrite !== undefined) {
+			c.merge(obj);
+			return c.merge(overwrite);
+		} else {
+			for (attribute in obj)
+				this[attribute] = obj[attribute];
+		}
+		return this;
+	}
+}
+
+function inheritPrototype(childObject, parentObject) {
+	var copyOfParent = Object.create(parentObject.prototype);
+	copyOfParent.constructor = childObject;
+	childObject.prototype = copyOfParent;
+}
+
 function addEvent(elem, evnt, funct) {
 	if (elem.attachEvent)
 		return elem.attachEvent('on'+evnt, funct);
@@ -28,24 +57,4 @@ function toString(obj) {
 	
 	txt += "}";
 	return txt;
-}
-
-function debug(text, clear) {
-	var dbg = getDebugWindow();
-	if (clear)
-		dbg.innerHTML = "";
-	dbg.innerHTML += text.replace(/\n/g, '<br />');
-}
-
-function getDebugWindow() {
-	var dbg = document.querySelector("div#debugHovinJS");
-	if (dbg == undefined) {
-		bdy = document.querySelector("body");
-		dbg = document.createElement("div");
-		dbg.id = "debugHovinJS";
-		dbg.style = "margin: 0; padding: 10px; display: block; width: 280px; height: 180px; overflow: hidden; position: absolute; right: 0px; bottom: 0px; background-color: #444; font-family: Courier New, sans-serif; font-size: 11px; color: #FEFEFE; border: 1px solid #000;";
-		bdy.appendChild(dbg);
-	}
-	
-	return dbg;
 }
