@@ -1,52 +1,73 @@
+/*
+	Description
+	::public
+		get e set X
+		get e set Y
+		add other point or x and y
+		subtract other point or x and y
+		multiply a scalar
+		divide a scalar
+		clone
+		serialize / toJSON / toString
+		
+	::static
+		add two points
+		subtract two points
+		multiply a point and a scalar
+		divide a point and a scalar
+
+*/
+
+
 /**
- * Creates a Point with 2 dimensions (x, y)
+ * @classdesc Creates a Point with 2 dimensions (x, y)
  * @class Point2
- * @param {(string|object|number[]|number)} JSON string with an object or an array with 2 number values (x, y), a object Point2, a number of the first coordinate
- * @param {number} A number of the second coordinate or undefined value
+ * @param {(string|object|number[]|number)} x JSON string with an object, Another object Point2 or simple object with x and y properties, Array with 2 number values (x, y), Number of the first coordinate
+ * @param {number|undefined} y A number of the second coordinate or undefined value
  */
 var Point2 = function(x, y) {
-	this._x = 0;
-	this._y = 0;
+	var obj = this.__getParameters(arguments);
+	
+	this._x = obj.x;
+	this._y = obj.y;
+};
 
+Point2.prototype.__getParameters = function() {
+	var x = 0, y = 0;
 	if (arguments.length == 1 || y === undefined) {
 		if (typeof(arguments[0]) == 'string') {
 			var obj = parseJSON(arguments[0]);
-			if (obj !== undefined) {
-				if (obj.x !== undefined) {
-					this._x = parseFloat(obj.x || 0);
-					this._y = parseFloat(obj.y || 0);
-				} else if (obj[0] !== undefined) {
-					this._x = parseFloat(obj[0] || 0);
-					this._y = parseFloat(obj[1] || 0);
-				}
-			} else if (arguments[0].indexOf(',') != -1) {
-				var regex = /^([\d\. ]+),([\d\. ]+)$/i;
-				var result = regex.exec(arguments[0]);
-				if (result) {
-					this._x = parseFloat(result[1] || 0);
-					this._y = parseFloat(result[2] || 0);
-				}
+			if (obj !== undefined && obj.x !== undefined && obj.y !== undefined) {
+				x = parseFloat(obj.x || 0);
+				y = parseFloat(obj.y || 0);
 			}
-		} else if (typeof(arguments[0]) == 'number') {
-			this._x = arguments[0];
-			this._y = arguments[0];
 		} else if (typeof(arguments[0]) == 'object') {
-			this._x = arguments[0].x();
-			this._y = arguments[0].y();
+			if (arguments[0] instanceof Point2) {
+				x = parseFloat(arguments[0].x() || 0);
+				y = parseFloat(arguments[0].y() || 0);
+			} else if (arguments[0] instanceof Array && arguments[0].length == 2) {
+				x = parseFloat(arguments[0][0] || 0);
+				y = parseFloat(arguments[0][1] || 0);
+			} else if (arguments[0].x !== undefined) {
+				x = parseFloat(arguments[0].x || 0);
+				y = parseFloat(arguments[0].y || 0);
+			}
 		}
 	} else if (arguments.length == 2) {
-		this._x = arguments[0];
-		this._y = arguments[1];
+		x = arguments[0];
+		y = arguments[1];
 	}
-};
+	return { 'x': x, 'y': y };
+}
 
 
 /* ******************** Getters and setters ******************** */
+
 /**
  * Get or set value x
  * @method x
- * @param {number|undefined} x Number of position x to set the value or undefined to get the value
- * @return {Point2|number} Return a object reference or position x value
+ * @param {number|undefined} x (set) Number of position x to set the value or (get) undefined to get the value
+ * @return {Point2|number} (set) Return a object reference or (get) return position x value
  */
 Point2.prototype.x = function(x) {
 	if (x === undefined) return this._x;
@@ -57,8 +78,8 @@ Point2.prototype.x = function(x) {
 /**
  * Get or set value y
  * @method y
- * @param {number|undefined} y Number of position y to set the value or undefined to get the value
- * @return {Point2|number} Return a object reference or position y value
+ * @param {number|undefined} y (set) Number of position y to set the value or (get) undefined to get the value
+ * @return {Point2|number} (set) Return a object reference or (get) return position y value
  */
 Point2.prototype.y = function(y) {
 	if (y === undefined) return this._y;
@@ -77,18 +98,11 @@ Point2.prototype.y = function(y) {
  * @return {Point2} Return the object reference
  */
 Point2.prototype.add = function() {
-	if (arguments.length == 1) {
-		if (typeof(arguments[0]) == 'object' && arguments[0] instanceof Point2) {
-				this._x += arguments[0].x();
-				this._y += arguments[0].y();
-		} else if (arguments[0].x !== undefined && arguments[0].y !== undefined) {
-			this._x += arguments[0].x;
-			this._y += arguments[0].y;
-		}
-	} else if (arguments.length == 2) {
-		this._x += arguments[0];
-		this._y += arguments[1];
-	}
+	var obj = this.__getParameters(arguments);
+	
+	this._x += obj.x;
+	this._y += obj.y;
+	
 	return this;
 }
 
@@ -100,23 +114,16 @@ Point2.prototype.add = function() {
  * @return {Point2} Return the object reference
  */
 Point2.prototype.subtract = function() {
-	if (arguments.length == 1) {
-		if (typeof(arguments[0]) == 'object' && arguments[0] instanceof Point2) {
-				this._x += arguments[0].x();
-				this._y += arguments[0].y();
-		} else if (arguments[0].x !== undefined && arguments[0].y !== undefined) {
-			this._x += arguments[0].x;
-			this._y += arguments[0].y;
-		}
-	} else if (arguments.length == 2) {
-		this._x += arguments[0];
-		this._y += arguments[1];
-	}
+	var obj = this.__getParameters(arguments);
+	
+	this._x -= obj.x;
+	this._y -= obj.y;
+	
 	return this;
 }
 
 /**
- * Multiply the point
+ * Multiply the point by a scalar value
  * @method multiply
  * @param {number} scalar Number multiplied
  * @return {Point2} Return the object reference
@@ -127,6 +134,12 @@ Point2.prototype.multiply = function(scalar) {
 	return this;
 }
 
+/**
+ * Divide the point by a scalar value
+ * @method divide
+ * @param {number} scalar Number divided
+ * @return {Point2} Return the object reference
+ */
 Point2.prototype.divide = function(scalar) {
 	this._x /= scalar;
 	this._y /= scalar;
@@ -134,15 +147,24 @@ Point2.prototype.divide = function(scalar) {
 }
 
 
-
 /* Default operations */
 
+/**
+ * Clone the point to a new object
+ * @method clone
+ * @return {Point2} Return a new object the object reference
+ */
 Point2.prototype.clone = function() {
 	return new Point2(this._x, this._y);
 }
 
 /* Serialization */
 
+/**
+ * Serialize a object into a 
+ * @method serialize
+ * @return {Point2} Return a new object the object reference
+ */
 Point2.prototype.toJson = 
 Point2.prototype.toString = 
 Point2.prototype.serialize = function() { return '{"x":' + this._x + ',"y":' + this._y + '}'; }

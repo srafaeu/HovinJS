@@ -1,4 +1,10 @@
-/* class Vector2 */
+/**
+ * Creates a Vector with 2 dimensions (x, y)
+ * @class Vector2
+ * @param {(string|object|Point2|Vector2|number[]|number)} x JSON string with an object or an array with 2 number values (x, y), a object Point2/Vector2, a number of the first coordinate
+ * @param {number|undefined} y A number of the second coordinate or undefined value
+ * @augment Point2
+ */
 var Vector2 = function() {
 	Point2.call(this, arguments);
 	
@@ -13,16 +19,78 @@ var Vector2 = function() {
 
 inheritPrototype(Vector2, Point2);
 
+
 /* Constructor */
 
+/**
+ * Create a vector by Size and Angle
+ * @method fromSizeAndAngle
+ * @memberof Vector2
+ * @param {number} magnitude Number of the magnitude for new Vector
+ * @param {number} angle Angle in radians for new Vector
+ * @augment Vector2
+ * @static
+ */
 Vector2.fromSizeAndAngle = 
+
+/**
+ * Create a vector by Size and Angle
+ * @method fromMagnitudeAndAngle
+ * @memberof Vector2
+ * @param {number} magnitude Number of the magnitude for new Vector
+ * @param {number} angle Angle in radians for new Vector
+ * @augment Vector2
+ * @static
+ */
 Vector2.fromMagnitudeAndAngle = function (magnitude, angle) {
 	return new Vector2(magnitude * Math.cos(angle), magnitude * Math.sin(angle));
 };
 
-Vector2.sumVector		= function(a, b) { return new Vector2(a.x() + b.x(), a.y() + b.y()); }
+/**
+ * Sum two diferent vectors and return a new one as result
+ * @method sumVector
+ * @memberof Vector2
+ * @param {Vector2} a First vector
+ * @param {Vector2} b Second vector
+ * @return New Vector2 of sum result
+ * @static
+ */
+Vector2.sumVector = function(a, b) { return new Vector2(a.x() + b.x(), a.y() + b.y()); }
+
+
+/**
+ * Create a vector by Size and Angle
+ * @method fromMagnitudeAndAngle
+ * @memberof Vector2
+ * @param {number} magnitude Number of the magnitude for new Vector
+ * @param {number} angle Angle in radians for new Vector
+ * @augment Vector2
+ * @static
+ */
 Vector2.subtractVector	= function(a, b) { return new Vector2(a.x() - b.x(), a.y() - b.y()); }
+
+
+/**
+ * Create a vector by Size and Angle
+ * @method fromMagnitudeAndAngle
+ * @memberof Vector2
+ * @param {number} magnitude Number of the magnitude for new Vector
+ * @param {number} angle Angle in radians for new Vector
+ * @augment Vector2
+ * @static
+ */
 Vector2.multiplyVector	= function(a, scalar) { return new Vector2(a.x() * scalar, a.y() * scalar); }
+
+
+/**
+ * Create a vector by Size and Angle
+ * @method fromMagnitudeAndAngle
+ * @memberof Vector2
+ * @param {number} magnitude Number of the magnitude for new Vector
+ * @param {number} angle Angle in radians for new Vector
+ * @augment Vector2
+ * @static
+ */
 Vector2.divideVector	= function(a, scalar) { return new Vector2(a.x() / scalar, a.y() / scalar); }
 
 

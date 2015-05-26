@@ -13,6 +13,7 @@ Engine de game em Canvas
 * Colisões e física;
 * Som e efeitos sonoros, fonte, partículas;
 * Mundo, conversão de medidas 
+* Esqueleto 2D
 
 ==Documentação==
 https://github.com/jsdoc3/jsdoc
