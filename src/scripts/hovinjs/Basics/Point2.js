@@ -1,7 +1,6 @@
 /**
  * Creates a Point with 2 dimensions (x, y)
  * @class Point2
- * @classdesc A class for a 2D Point definition.
  * @param {(string|object|number[]|number)} JSON string with an object or an array with 2 number values (x, y), a object Point2, a number of the first coordinate
  * @param {number} A number of the second coordinate or undefined value
  */
@@ -42,10 +41,12 @@ var Point2 = function(x, y) {
 };
 
 
-/* Getters and setters */
+/* ******************** Getters and setters ******************** */
 /**
+ * Get or set value x
  * @method x
- * @memberof MyNamespace
+ * @param {number|undefined} x Number of position x to set the value or undefined to get the value
+ * @return {Point2|number} Return a object reference or position x value
  */
 Point2.prototype.x = function(x) {
 	if (x === undefined) return this._x;
@@ -53,6 +54,12 @@ Point2.prototype.x = function(x) {
 	return this;
 };
 
+/**
+ * Get or set value y
+ * @method y
+ * @param {number|undefined} y Number of position y to set the value or undefined to get the value
+ * @return {Point2|number} Return a object reference or position y value
+ */
 Point2.prototype.y = function(y) {
 	if (y === undefined) return this._y;
 	this._y = y;
@@ -60,16 +67,23 @@ Point2.prototype.y = function(y) {
 };
 
 
-/* Operations */
+/* ******************** Operations ******************** */
 
+/**
+ * Sum the point
+ * @method add
+ * @param {object|Point2|number} Object of position x and y to set the value or number to set value x
+ * @param {number|undefined} number to set value y or undefined to get the value
+ * @return {Point2} Return the object reference
+ */
 Point2.prototype.add = function() {
 	if (arguments.length == 1) {
-		if (typeof(arguments[0]) == 'object') {
-			this._x += arguments[0].x();
-			this._y += arguments[0].y();
-		} else if (typeof(arguments[0]) == 'number') {
-			this._x += arguments[0];
-			this._y += arguments[0];
+		if (typeof(arguments[0]) == 'object' && arguments[0] instanceof Point2) {
+				this._x += arguments[0].x();
+				this._y += arguments[0].y();
+		} else if (arguments[0].x !== undefined && arguments[0].y !== undefined) {
+			this._x += arguments[0].x;
+			this._y += arguments[0].y;
 		}
 	} else if (arguments.length == 2) {
 		this._x += arguments[0];
@@ -78,14 +92,21 @@ Point2.prototype.add = function() {
 	return this;
 }
 
+/**
+ * Subtract the point
+ * @method subtract
+ * @param {object|Point2|number} Object of position x and y to set the value or number to set value x
+ * @param {number|undefined} number to set value y or undefined to get the value
+ * @return {Point2} Return the object reference
+ */
 Point2.prototype.subtract = function() {
 	if (arguments.length == 1) {
-		if (typeof(arguments[0]) == 'object') {
-			this._x += arguments[0].x();
-			this._y += arguments[0].y();
-		} else if (typeof(arguments[0]) == 'number') {
-			this._x += arguments[0];
-			this._y += arguments[0];
+		if (typeof(arguments[0]) == 'object' && arguments[0] instanceof Point2) {
+				this._x += arguments[0].x();
+				this._y += arguments[0].y();
+		} else if (arguments[0].x !== undefined && arguments[0].y !== undefined) {
+			this._x += arguments[0].x;
+			this._y += arguments[0].y;
 		}
 	} else if (arguments.length == 2) {
 		this._x += arguments[0];
@@ -94,6 +115,12 @@ Point2.prototype.subtract = function() {
 	return this;
 }
 
+/**
+ * Multiply the point
+ * @method multiply
+ * @param {number} scalar Number multiplied
+ * @return {Point2} Return the object reference
+ */
 Point2.prototype.multiply = function(scalar) {
 	this._x *= scalar;
 	this._y *= scalar;

@@ -1,4 +1,4 @@
-
+/* Create a static method to create object if it doesn't exist on native code */
 if (typeof Object.create !== 'function') {
 	Object.create = function (o) {
 		function F() {}
@@ -7,6 +7,7 @@ if (typeof Object.create !== 'function') {
 	};
 }
 
+/* Create a method to merge object if it doesn't exist on native code */
 if (typeof Object.prototype.merge !== 'function') {
 	Object.prototype.merge = function(obj, overwrite) {
 		var attribute, c = {};
