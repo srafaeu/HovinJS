@@ -1,38 +1,43 @@
 /*
 	Description
 	::public
-		get e set X
-		get e set Y
-		add other point or x and y
-		subtract other point or x and y
-		multiply a scalar
-		divide a scalar
-		clone
-		serialize / toJSON / toString
-		
-	::static
-		add two points
-		subtract two points
-		multiply a point and a scalar
-		divide a point and a scalar
+	+	get e set X
+	+	get e set Y
+	+	add other point or x and y
+	+	subtract other point or x and y
+	+	multiply a scalar
+	+	divide a scalar
+	+	clone
+	+	serialize / toJSON / toString
 
+	::static
+	+	add two points
+	+	subtract two points
+	+	multiply a point and a scalar
+	+	divide a point and a scalar
 */
 
-
 /**
- * @classdesc Creates a Point with 2 dimensions (x, y)
+ * @classdesc Point with 2 dimensions (x, y)
  * @class Point2
  * @param {(string|object|number[]|number)} x JSON string with an object, Another object Point2 or simple object with x and y properties, Array with 2 number values (x, y), Number of the first coordinate
  * @param {number|undefined} y A number of the second coordinate or undefined value
  */
 var Point2 = function(x, y) {
-	var obj = this.__getParameters(arguments);
+	var obj = this.__getClassParameters(arguments);
 	
 	this._x = obj.x;
 	this._y = obj.y;
 };
 
-Point2.prototype.__getParameters = function() {
+/**
+ * Hidden method for getting x and y values from different kind of parameters
+ * @method __getClassParameters
+ * @param {(string|object|number[]|number)} x JSON string with an object, Another object Point2 or simple object with x and y properties, Array with 2 number values (x, y), Number of the first coordinate
+ * @param {number|undefined} y A number of the second coordinate or undefined value
+ * @return {object} Return a simple object with x and y values
+ */
+Point2.prototype.__getClassParameters = function() {
 	var x = 0, y = 0;
 	if (arguments.length == 1 || y === undefined) {
 		if (typeof(arguments[0]) == 'string') {
@@ -93,12 +98,12 @@ Point2.prototype.y = function(y) {
 /**
  * Sum the point
  * @method add
- * @param {object|Point2|number} Object of position x and y to set the value or number to set value x
- * @param {number|undefined} number to set value y or undefined to get the value
+ * @param {(string|object|number[]|number)} x JSON string with an object, Another object Point2 or simple object with x and y properties, Array with 2 number values (x, y), Number of the first coordinate
+ * @param {number|undefined} y A number of the second coordinate or undefined value
  * @return {Point2} Return the object reference
  */
 Point2.prototype.add = function() {
-	var obj = this.__getParameters(arguments);
+	var obj = this.__getClassParameters(arguments);
 	
 	this._x += obj.x;
 	this._y += obj.y;
@@ -109,12 +114,12 @@ Point2.prototype.add = function() {
 /**
  * Subtract the point
  * @method subtract
- * @param {object|Point2|number} Object of position x and y to set the value or number to set value x
- * @param {number|undefined} number to set value y or undefined to get the value
+ * @param {(string|object|number[]|number)} x JSON string with an object, Another object Point2 or simple object with x and y properties, Array with 2 number values (x, y), Number of the first coordinate
+ * @param {number|undefined} y A number of the second coordinate or undefined value
  * @return {Point2} Return the object reference
  */
 Point2.prototype.subtract = function() {
-	var obj = this.__getParameters(arguments);
+	var obj = this.__getClassParameters(arguments);
 	
 	this._x -= obj.x;
 	this._y -= obj.y;
@@ -144,6 +149,61 @@ Point2.prototype.divide = function(scalar) {
 	this._x /= scalar;
 	this._y /= scalar;
 	return this;
+}
+
+
+/* ******************** Operations ******************** */
+
+/**
+ * Sum two points
+ * @method add
+ * @param {Point2} a A Point2 class for operation
+ * @param {Point2} b A Point2 class for operation
+ * @return {Point2} Return a new Point2 resulting from the operation
+ */
+Point2.add = function(a, b) {
+	var c = a.clone();
+	c.add(b);
+	return c;
+}
+
+/**
+ * Subtract two points
+ * @method add
+ * @param {Point2} a A Point2 class for operation
+ * @param {Point2} b A Point2 class for operation
+ * @return {Point2} Return a new Point2 resulting from the operation
+ */
+Point2.subtract = function(a, b) {
+	var c = a.clone();
+	c.subtract(b);
+	return c;
+}
+
+/**
+ * Multiply a point by a scalar value and return the new point
+ * @method multiply
+ * @param {Point2} a A Point2 class for operation
+ * @param {number} scalar Number multiplied
+ * @return {Point2} Return a new Point2 resulting from the operation
+ */
+Point2.multiply = function(a, scalar) {
+	var c = a.clone();
+	c.multiply(scalar);
+	return c;
+}
+
+/**
+ * Divide a point by a scalar value and return the new point
+ * @method divide
+ * @param {Point2} a A Point2 class for operation
+ * @param {number} scalar Number divided
+ * @return {Point2} Return a new Point2 resulting from the operation
+ */
+Point2.divide = function(a, scalar) {
+	var c = a.clone();
+	c.divide(scalar);
+	return c;
 }
 
 
