@@ -91,7 +91,7 @@ Size.prototype.height = function(height) {
 /**
  * Clone the size to a new object
  * @method clone
- * @return {Size} Return a new object the object reference
+ * @return {Size} Return a new object reference
  */
 Size.prototype.clone = function() {
 	return new Size(this._width, this._height);
@@ -100,9 +100,9 @@ Size.prototype.clone = function() {
 /* Serialization */
 
 /**
- * Serialize a object into a 
+ * Serialize a object into a string
  * @method serialize
- * @return {Size} Return a new object the object reference
+ * @return {string} Return a string JSON of the object
  */
 Size.prototype.toJson = 
 Size.prototype.toString = 

@@ -157,7 +157,7 @@ Point2.prototype.divide = function(scalar) {
 /**
  * Clone the point to a new object
  * @method clone
- * @return {Point2} Return a new object the object reference
+ * @return {Point2} Return a new object reference
  */
 Point2.prototype.clone = function() {
 	return new Point2(this._x, this._y);
@@ -167,9 +167,9 @@ Point2.prototype.clone = function() {
 /* Serialization */
 
 /**
- * Serialize a object into a 
+ * Serialize a object into a string
  * @method serialize
- * @return {Point2} Return a new object the object reference
+ * @return {string} Return a string JSON of the object
  */
 Point2.prototype.toJson = 
 Point2.prototype.toString = 

@@ -190,7 +190,7 @@ Vector2.prototype.angleBetween = function(vector) {
 /**
  * Clone the vector to a new object
  * @method clone
- * @return {Vector2} Return a new object the object reference
+ * @return {Vector2} Return a new object reference
  */
 Vector2.prototype.clone = function() {
 	return new Vector2(this._x, this._y);

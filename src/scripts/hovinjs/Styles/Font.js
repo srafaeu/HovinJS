@@ -1,15 +1,16 @@
 /* class Font */
-var Font = function(fontname, size, type) {
-	this._fontname	= fontname || "sans-serif";
-	this._size		= size || 12;
-	this._type		= type || "px";
+var Font = function(name, size, unit) {
+	this._id	= id || "sans-serif";
+	this._name	= name || "sans-serif";
+	this._size	= size || 12;
+	this._unit	= unit || "px";
 };
 
 /* Getters and Setters */
 
-Font.prototype.fontname = function(fontname) {
-	if (fontname === undefined) return this._fontname;
-	this._fontname = fontname;
+Font.prototype.name = function(name) {
+	if (name === undefined) return this._name;
+	this._name = name;
 	return this;
 };
 
@@ -19,22 +20,25 @@ Font.prototype.size = function(size) {
 	return this;
 };
 
-Font.prototype.type = function(type) {
-	if (type === undefined) return this._type;
-	this._type = type;
+Font.prototype.unit = function(unit) {
+	if (unit === undefined) return this._unit;
+	this._unit = unit;
 	return this;
 };
 
 /* Html */
 Font.prototype.html = function(context) {
-	return this._size.toString() + this._type + " " + this._fontname;
+	return this._size.toString() + this._unit + " " + this._name;
 }
 
 /* Serialization */
-
-Font.prototype.toJson = 
-Font.prototype.toString = 
 Font.prototype.serialize = function() {
-	return "{ fontname: " + this._fontname + ", size: " + this._size + ", type: " + this._type + " }";
+	return "{ name: " + this._name + ", size: " + this._size + ", unit: " + this._unit + " }";
 };
+
+Font.prototype.toJson = Font.prototype.serialize;
+
+Font.prototype.toString = Font.prototype.serialize;
+
+
 
