@@ -53,7 +53,7 @@ Point2.prototype.__getClassParameters = function() {
 			} else if (arguments[0] instanceof Array && arguments[0].length == 2) {
 				x = parseFloat(arguments[0][0] || 0);
 				y = parseFloat(arguments[0][1] || 0);
-			} else if (arguments[0].x !== undefined) {
+			} else if (arguments[0].x !== undefined && arguments[0].y !== undefined) {
 				x = parseFloat(arguments[0].x || 0);
 				y = parseFloat(arguments[0].y || 0);
 			}
@@ -66,7 +66,7 @@ Point2.prototype.__getClassParameters = function() {
 }
 
 
-/* ******************** Getters and setters ******************** */
+/* Getters and setters */
 
 /**
  * Get or set value x
@@ -93,7 +93,7 @@ Point2.prototype.y = function(y) {
 };
 
 
-/* ******************** Operations ******************** */
+/* Operations */
 
 /**
  * Sum the point
@@ -152,13 +152,37 @@ Point2.prototype.divide = function(scalar) {
 }
 
 
-/* ******************** Operations ******************** */
+/* Default operations */
+
+/**
+ * Clone the point to a new object
+ * @method clone
+ * @return {Point2} Return a new object the object reference
+ */
+Point2.prototype.clone = function() {
+	return new Point2(this._x, this._y);
+}
+
+
+/* Serialization */
+
+/**
+ * Serialize a object into a 
+ * @method serialize
+ * @return {Point2} Return a new object the object reference
+ */
+Point2.prototype.toJson = 
+Point2.prototype.toString = 
+Point2.prototype.serialize = function() { return '{"x":' + this._x + ',"y":' + this._y + '}'; }
+
+
+/* Static */
 
 /**
  * Sum two points
  * @method add
- * @param {Point2} a A Point2 class for operation
- * @param {Point2} b A Point2 class for operation
+ * @param {Point2} a A Point2 object for operation
+ * @param {Point2} b A Point2 object for operation
  * @return {Point2} Return a new Point2 resulting from the operation
  */
 Point2.add = function(a, b) {
@@ -170,8 +194,8 @@ Point2.add = function(a, b) {
 /**
  * Subtract two points
  * @method add
- * @param {Point2} a A Point2 class for operation
- * @param {Point2} b A Point2 class for operation
+ * @param {Point2} a A Point2 object for operation
+ * @param {Point2} b A Point2 object for operation
  * @return {Point2} Return a new Point2 resulting from the operation
  */
 Point2.subtract = function(a, b) {
@@ -183,7 +207,7 @@ Point2.subtract = function(a, b) {
 /**
  * Multiply a point by a scalar value and return the new point
  * @method multiply
- * @param {Point2} a A Point2 class for operation
+ * @param {Point2} a A Point2 object for operation
  * @param {number} scalar Number multiplied
  * @return {Point2} Return a new Point2 resulting from the operation
  */
@@ -196,7 +220,7 @@ Point2.multiply = function(a, scalar) {
 /**
  * Divide a point by a scalar value and return the new point
  * @method divide
- * @param {Point2} a A Point2 class for operation
+ * @param {Point2} a A Point2 object for operation
  * @param {number} scalar Number divided
  * @return {Point2} Return a new Point2 resulting from the operation
  */
@@ -206,25 +230,3 @@ Point2.divide = function(a, scalar) {
 	return c;
 }
 
-
-/* Default operations */
-
-/**
- * Clone the point to a new object
- * @method clone
- * @return {Point2} Return a new object the object reference
- */
-Point2.prototype.clone = function() {
-	return new Point2(this._x, this._y);
-}
-
-/* Serialization */
-
-/**
- * Serialize a object into a 
- * @method serialize
- * @return {Point2} Return a new object the object reference
- */
-Point2.prototype.toJson = 
-Point2.prototype.toString = 
-Point2.prototype.serialize = function() { return '{"x":' + this._x + ',"y":' + this._y + '}'; }

@@ -1,24 +1,45 @@
-/* class Texture */
-var Texture = function(id, source, loaded) {
+/*
+	Description
+	::public
+	+	get file
+	+	get width
+	+	get height
+	+	get isLoaded
+	+	get e set size
+	+	clone
+	+	serialize / toJSON / toString
+
+	::static
+	
+*/
+
+/**
+ * @classdesc Texture image loaded dynamically
+ * @class Texture
+ * @param {string} id String id to identify texture
+ * @param {string} source File path
+ * @param {function} callback Callback function for loaded image return
+ */
+var Texture = function(id, source, callback) {
 	var txr = this;
 	
 	this._id		= id;
-	this._size		= new Size(0, 0);
 	this._path		= source;
-	this._image		= new Image();
+	this._file		= new Image();
+	this._size		= new Size(0, 0);
 	this._isLoaded	= false;
 	
-	addEvent(this._image, 'abort', function(e) { loaded(e, 'abort', txr); });
-	addEvent(this._image, 'error', function(e) { loaded(e, 'error', txr); });
-	addEvent(this._image, 'load',  function(e) { loaded(e, 'load' , txr); });
+	addEvent(this._file, 'abort', function(e) { callback(e, 'abort', txr); });
+	addEvent(this._file, 'error', function(e) { callback(e, 'error', txr); });
+	addEvent(this._file, 'load',  function(e) { callback(e, 'load' , txr); });
 	
-	this._image.src = this._path;
+	this._file.src = this._path;
 };
 
 
 /* Getters and setters */
 
-Texture.prototype.image = function() { return this._image; };
+Texture.prototype.file = function() { return this._file; };
 
 Texture.prototype.size = function(size) {
 	if (size === undefined) return this._size;
@@ -27,16 +48,12 @@ Texture.prototype.size = function(size) {
 	return this;
 };
 
-Texture.prototype.width = function(width) {
-	if (width === undefined) return this._size.width();
-	this._size.width(width);
-	return this;
+Texture.prototype.width = function() {
+	return this._size.width();
 };
 
 Texture.prototype.height = function(height) {
-	if (height === undefined) return this._height;
-	this._height = height;
-	return this;
+	return this._height;
 };
 
 Texture.prototype.isLoaded = function(loaded) {

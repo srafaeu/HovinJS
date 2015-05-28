@@ -1,110 +1,122 @@
+/*
+	Description
+	::public
+	-	get e set X
+	-	get e set Y
+	-	add other point or x and y
+	-	subtract other point or x and y
+	-	multiply a scalar
+	-	divide a scalar
+	+	size / magnitude
+	+	sizeSquare
+	+	angle
+	+	normalize
+	+	rotate
+	+	dot
+	+	angleBetween
+	+	clone
+	-	serialize / toJSON / toString
+
+	::static
+	-	add two points
+	-	subtract two points
+	-	multiply a point and a scalar
+	-	divide a point and a scalar
+	+	fromMagnitudeAndAngle
+	+	fromSizeAndAngle
+	+	normalize
+*/
+
 /**
- * Creates a Vector with 2 dimensions (x, y)
+ * @classdesc Vector with 2 dimensions (x, y)
  * @class Vector2
- * @param {(string|object|Point2|Vector2|number[]|number)} x JSON string with an object or an array with 2 number values (x, y), a object Point2/Vector2, a number of the first coordinate
+ * @param {(string|object|number[]|number)} x JSON string with an object, Another object Point2, object Vector2 or simple object with x and y or angle and magnitude properties, Array with 2 number values (x, y), Number of the first coordinate
  * @param {number|undefined} y A number of the second coordinate or undefined value
  * @augment Point2
  */
 var Vector2 = function() {
-	Point2.call(this, arguments);
+	var obj = this.__getClassParameters(arguments);
 	
-	if (arguments.length == 1 && typeof(arguments[0]) == 'string') {
-		var obj = parseJSON(arguments[0]);
-		if (obj !== undefined && obj.angle !== undefined && obj.magnitude !== undefined) {
-			this._x = obj.magnitude * Math.cos(obj.angle);
-			this._y = obj.magnitude * Math.sin(obj.angle);
-		}
-	}
+	this._x = obj.x;
+	this._y = obj.y;
 };
 
 inheritPrototype(Vector2, Point2);
 
-
-/* Constructor */
-
 /**
- * Create a vector by Size and Angle
- * @method fromSizeAndAngle
- * @memberof Vector2
- * @param {number} magnitude Number of the magnitude for new Vector
- * @param {number} angle Angle in radians for new Vector
- * @augment Vector2
- * @static
+ * Hidden method for getting x and y values from different kind of parameters
+ * @method __getClassParameters
+ * @param {(string|object|number[]|number)} x JSON string with an object, Another object Point2, object Vector2 or simple object with x and y or angle and magnitude properties, Array with 2 number values (x, y), Number of the first coordinate
+ * @param {number|undefined} y A number of the second coordinate or undefined value
+ * @return {object} Return a simple object with x and y values
  */
-Vector2.fromSizeAndAngle = 
-
-/**
- * Create a vector by Size and Angle
- * @method fromMagnitudeAndAngle
- * @memberof Vector2
- * @param {number} magnitude Number of the magnitude for new Vector
- * @param {number} angle Angle in radians for new Vector
- * @augment Vector2
- * @static
- */
-Vector2.fromMagnitudeAndAngle = function (magnitude, angle) {
-	return new Vector2(magnitude * Math.cos(angle), magnitude * Math.sin(angle));
-};
-
-/**
- * Sum two diferent vectors and return a new one as result
- * @method sumVector
- * @memberof Vector2
- * @param {Vector2} a First vector
- * @param {Vector2} b Second vector
- * @return New Vector2 of sum result
- * @static
- */
-Vector2.sumVector = function(a, b) { return new Vector2(a.x() + b.x(), a.y() + b.y()); }
-
-
-/**
- * Create a vector by Size and Angle
- * @method fromMagnitudeAndAngle
- * @memberof Vector2
- * @param {number} magnitude Number of the magnitude for new Vector
- * @param {number} angle Angle in radians for new Vector
- * @augment Vector2
- * @static
- */
-Vector2.subtractVector	= function(a, b) { return new Vector2(a.x() - b.x(), a.y() - b.y()); }
-
-
-/**
- * Create a vector by Size and Angle
- * @method fromMagnitudeAndAngle
- * @memberof Vector2
- * @param {number} magnitude Number of the magnitude for new Vector
- * @param {number} angle Angle in radians for new Vector
- * @augment Vector2
- * @static
- */
-Vector2.multiplyVector	= function(a, scalar) { return new Vector2(a.x() * scalar, a.y() * scalar); }
-
-
-/**
- * Create a vector by Size and Angle
- * @method fromMagnitudeAndAngle
- * @memberof Vector2
- * @param {number} magnitude Number of the magnitude for new Vector
- * @param {number} angle Angle in radians for new Vector
- * @augment Vector2
- * @static
- */
-Vector2.divideVector	= function(a, scalar) { return new Vector2(a.x() / scalar, a.y() / scalar); }
+Vector2.prototype.__getClassParameters = function() {
+	var x = 0, y = 0;
+	if (arguments.length == 1 || y === undefined) {
+		if (typeof(arguments[0]) == 'string') {
+			var obj = parseJSON(arguments[0]);
+			if (obj !== undefined && obj.x !== undefined && obj.y !== undefined) {
+				x = parseFloat(obj.x || 0);
+				y = parseFloat(obj.y || 0);
+			} else if (obj !== undefined && obj.angle !== undefined && obj.magnitude !== undefined) {
+				x = obj.magnitude * Math.cos(obj.angle);
+				y = obj.magnitude * Math.sin(obj.angle);
+			}
+		} else if (typeof(arguments[0]) == 'object') {
+			if (arguments[0] instanceof Point2 || arguments[0] instanceof Vector2) {
+				x = parseFloat(arguments[0].x() || 0);
+				y = parseFloat(arguments[0].y() || 0);
+			} else if (arguments[0] instanceof Array && arguments[0].length == 2) {
+				x = parseFloat(arguments[0][0] || 0);
+				y = parseFloat(arguments[0][1] || 0);
+			} else if (arguments[0].x !== undefined && arguments[0].y !== undefined) {
+				x = parseFloat(arguments[0].x || 0);
+				y = parseFloat(arguments[0].y || 0);
+			} else if (arguments[0].angle !== undefined && arguments[0].magnitude !== undefined) {
+				x = arguments[0].magnitude * Math.cos(arguments[0].angle);
+				y = arguments[0].magnitude * Math.sin(arguments[0].angle);
+			}
+		}
+	} else if (arguments.length == 2) {
+		x = arguments[0];
+		y = arguments[1];
+	}
+	return { 'x': x, 'y': y };
+}
 
 
 /* Properties */
 
+/**
+ * Returns the squared size of the vector
+ * @method sizeSquare
+ * @return {number} Calculate value of x² + y² from the vector
+ */
 Vector2.prototype.sizeSquare = function() { 
 	return (this._x * this._x + this._y * this._y);
 }
 
-Vector2.prototype.size =
+/**
+ * Returns the size of the vector
+ * @method magnitude
+ * @return {number} Calculate value of square(x² + y²) from the vector
+ */
 Vector2.prototype.magnitude = function () {
 	return Math.sqrt(this.sizeSquare());
 };
 
+/**
+ * Returns the size of the vector
+ * @method size
+ * @return {number} Calculate value of square(x² + y²) from the vector
+ */
+Vector2.prototype.size = Vector2.prototype.magnitude;
+
+/**
+ * Returns the angle generated by the vector
+ * @method angle
+ * @return {number} Angle generated by the vector
+ */
 Vector2.prototype.angle = function () {
 	return Math.atan2(this._y, this._x);
 };
@@ -112,18 +124,26 @@ Vector2.prototype.angle = function () {
 
 /* Methods */
 
+/**
+ * Normalize vector dividing it by its size
+ * @method normalize
+ * @return {Vector2} Return a reference to the object
+ */
 Vector2.prototype.normalize = function () {
-	var size = this.size();
-
-	this._x /= size;
-	this._y /= size;
+	this.divide(this.size());
 
 	return this;
 };
 
-Vector2.prototype.rotate = function(ang) {
-	var s = Math.sin(ang);
-	var c = Math.cos(ang);
+/**
+ * Rotate a angle from the current position
+ * @method rotate
+ * @param {number} angle Floating-point value of the angle for rotation in Radians
+ * @return {Vector2} Return a reference to the object
+ */
+Vector2.prototype.rotate = function(angle) {
+	var s = Math.sin(angle);
+	var c = Math.cos(angle);
 	var xvalue = this._x * c - this._y * s;
 	var yvalue = this._x * s + this._y * c;
 	
@@ -135,11 +155,22 @@ Vector2.prototype.rotate = function(ang) {
 
 
 /* Relationship */
-
+/**
+ * Calculate the dot product between two vectors
+ * @method dot
+ * @param {Vector2} vector A Vector2 object for calculate
+ * @return Return the dot product between two vectors
+ */
 Vector2.prototype.dot = function(vector) {
 	return this._x * vector.x() + this._y * vector.y();
 }
 
+/**
+ * Calculate the angle between two vectors and return the value in Radians
+ * @method angleBetween
+ * @param {Vector2} vector A Vector2 object for comparison
+ * @return Return the angle between two vectors in Radians
+ */
 Vector2.prototype.angleBetween = function(vector) {
 	var dp, angPi;
 	
@@ -156,7 +187,50 @@ Vector2.prototype.angleBetween = function(vector) {
 
 /* Default operations */
 
+/**
+ * Clone the vector to a new object
+ * @method clone
+ * @return {Vector2} Return a new object the object reference
+ */
 Vector2.prototype.clone = function() {
 	return new Vector2(this._x, this._y);
 }
 
+
+/* Static */
+
+/**
+ * Create a vector by Size and Angle
+ * @method fromMagnitudeAndAngle
+ * @memberof Vector2
+ * @param {number} magnitude Number of the magnitude for new Vector
+ * @param {number} angle Angle in radians for new Vector
+ * @static
+ */
+Vector2.fromMagnitudeAndAngle = function (magnitude, angle) {
+	return new Vector2(magnitude * Math.cos(angle), magnitude * Math.sin(angle));
+};
+
+/**
+ * Create a vector by Size and Angle
+ * @method fromSizeAndAngle
+ * @memberof Vector2
+ * @param {number} magnitude Number of the magnitude for new Vector
+ * @param {number} angle Angle in radians for new Vector
+ * @static
+ */
+Vector2.fromSizeAndAngle = Vector2.fromMagnitudeAndAngle;
+
+/**
+ * Create a new normalized vector based on the vector passed as parameter
+ * @method normalize
+ * @memberof Vector2
+ * @param {Vector2} vector Vector2 used as reference for the new normalized vector
+ * @return {Vector2} Return a new normalized vector based on the vector passed
+ * @static
+ */
+Vector2.normalize = function (vector) {
+	var a = vector.clone();
+	a.normalize();
+	return a;
+};
