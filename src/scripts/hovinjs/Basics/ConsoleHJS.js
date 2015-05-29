@@ -46,13 +46,13 @@ var ConsoleHJS = function(options) {
  * @returns {HTMLDivElement} Reference to the console HTML element 
  */
 ConsoleHJS.prototype.create = function() {
-	var dbg = document.querySelector("div#" + this.options.id);
+	var dbg = document.querySelector("div#" + this._options.id);
 		
 	if (dbg == undefined) {
 		bdy = document.querySelector("body");
 		dbg = document.createElement("div");
 		
-		dbg.id = this.options.id;
+		dbg.id = this._options.id;
 		dbg.style = this.createStyle();
 		
 		bdy.appendChild(dbg);
@@ -68,8 +68,8 @@ ConsoleHJS.prototype.create = function() {
 ConsoleHJS.prototype.createStyle = function() {
 	var attribute, value, styles = [];
 	
-	for (attribute in this.options) {
-		value = this.options[attribute];
+	for (attribute in this._options) {
+		value = this._options[attribute];
 		
 		if (value !== undefined)
 			styles.push(attribute + ': ' + value  + ((typeof value == 'number') ? "px;" : ";"));
@@ -77,7 +77,6 @@ ConsoleHJS.prototype.createStyle = function() {
 	
 	return styles.join("");
 };
-
 
 /**
  * Print a string on the console and add a new line in the end of string
@@ -103,7 +102,7 @@ ConsoleHJS.prototype.debug = function(text, clear) {
 	else
 		dbg.innerHTML += text;
 	
-	dbg.style.display = this.options.display;
+	dbg.style.display = this._options.display;
 };
 
 /**

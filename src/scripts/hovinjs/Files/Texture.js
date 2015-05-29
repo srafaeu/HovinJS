@@ -29,6 +29,7 @@ var Texture = function(id, source, callback) {
 	this._file		= new Image();
 	this._size		= new Size(0, 0);
 	this._isLoaded	= false;
+	this._callback	= callback;
 	
 	addEvent(this._file, 'abort', function(e) { callback(e, 'abort', txr); });
 	addEvent(this._file, 'error', function(e) { callback(e, 'error', txr); });
@@ -96,17 +97,15 @@ Texture.prototype.isLoaded = function(loaded) {
 /**
  * Draw the image in a specified position
  * @method draw
- * @param {HTMLContextElement} context Reference object to the Canvas Context 
+ * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Point2|Vector2} position Position of image as Point2 or Vector2
  * @param {number} angle Angle for rotating image in Radians
  */
 Texture.prototype.draw = function(context, position, angle) {
-	var xf = 0, yf = 0;
-
-	xf		= position.x();
-	yf		= position.y();
-	width	= this._size.width();
-	height	= this._size.height();
+	var xf	= position.x(),
+		yf	= position.y(),
+		w	= this._size.width(),
+		h	= this._size.height();
 
 	context.save();
 	context.translate(xf, yf);
@@ -114,7 +113,19 @@ Texture.prototype.draw = function(context, position, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	context.drawImage(this._image, -width / 2, -height / 2, width, height);
+	context.drawImage(this._image, -(width / 2), -(height / 2), width, height);
+}
+
+
+/* Default operations */
+
+/**
+ * Clone the texture to a new object
+ * @method clone
+ * @return {Texture} Return a new object reference
+ */
+Texture.prototype.clone = function() {
+	return new Texture(this._id, this._path, this._callback);
 }
 
 

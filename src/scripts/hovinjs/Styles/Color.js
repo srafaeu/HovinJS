@@ -8,6 +8,7 @@
 	+	toRGB
 	+	toRGBA
 	+	toHex
+	+	html
 	+	clone
 	+	serialize / toJSON / toString
 
@@ -34,22 +35,19 @@ var Color = function() {
 /**
  * Hidden method for getting red, green, blue and alpha values from different kind of parameters
  * @method __getClassParameters
- * @param {(string|object|number[]|number)} color String with an JSON object, string with a color in hexadecimal or simple object with red, green, blue and alpha properties, Array with 3 or 4 number values (red, green, blue and alpha), Number of the red color
- * @param {number|undefined} greenOrAlpha A number of green color in decimal or floating-point value for alpha value (range 0.0 - 1.0)
- * @param {number|undefined} blue A number of green color in decimal
- * @param {number|undefined} alpha Floating-point value for alpha value (range 0.0 - 1.0)
+ * @param {*} parameters All possible parameters defined on constructor
  * @return {object} Return a simple object with red, green, blue and alpha values
  */
-Color.prototype.__getClassParameters = function() {
+Color.prototype.__getClassParameters = function(parameters) {
 	var red = 0, green = 0, blue = 0, alpha = 1.0;
 	
-	if (arguments.length == 1 || arguments.length == 2) {
-		if (typeof(arguments[0]) === 'string') {
-			if (arguments[0].indexOf('#') > -1) {
+	if (parameters.length == 1 || parameters.length == 2) {
+		if (typeof(parameters[0]) === 'string') {
+			if (parameters[0].indexOf('#') > -1) {
 				var hex, result;
 				var hexRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
 				var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-				hex = arguments[0];
+				hex = parameters[0];
 				hex = hex.replace(shorthandRegex, function(m, r, g, b) { return r + r + g + g + b + b; });
 				result = hexRegex.exec(hex);
 				
@@ -60,9 +58,9 @@ Color.prototype.__getClassParameters = function() {
 				} else {		
 					throw "Invalid hexadecimal format";
 				}
-				alpha = (arguments[1] >= 0 && arguments[1] <= 1) ? arguments[1] : 1.0;
+				alpha = (parameters[1] >= 0 && parameters[1] <= 1) ? parameters[1] : 1.0;
 			} else {
-				var obj = parseJSON(arguments[0]);
+				var obj = parseJSON(parameters[0]);
 				if (obj !== undefined) {
 					if (obj.r !== undefined || obj.red !== undefined) {
 						red		= parseInt(obj.r || obj.red);
@@ -74,38 +72,38 @@ Color.prototype.__getClassParameters = function() {
 					}
 				}
 			}
-		} else if (typeof(arguments[0]) === 'object') {
-			if (arguments[0] instanceof Color) {
-				red		= parseFloat(arguments[0].r() || 0);
-				green	= parseFloat(arguments[0].g() || 0);
-				blue	= parseFloat(arguments[0].b() || 0);
+		} else if (typeof(parameters[0]) === 'object') {
+			if (parameters[0] instanceof Color) {
+				red		= parseFloat(parameters[0].r() || 0);
+				green	= parseFloat(parameters[0].g() || 0);
+				blue	= parseFloat(parameters[0].b() || 0);
 				
-				if (arguments[0].a() !== undefined || arguments[0].alpha() !== undefined)
-					alpha	= parseFloat(arguments[0].a() || 0);
+				if (parameters[0].a() !== undefined || parameters[0].alpha() !== undefined)
+					alpha	= parseFloat(parameters[0].a() || 0);
 				
-			} else if (arguments[0] instanceof Array && arguments[0].length > 2) {
-				red		= parseFloat(arguments[0][0] || 0);
-				green	= parseFloat(arguments[0][1] || 0);
-				blue	= parseFloat(arguments[0][2] || 0);
+			} else if (parameters[0] instanceof Array && parameters[0].length > 2) {
+				red		= parseFloat(parameters[0][0] || 0);
+				green	= parseFloat(parameters[0][1] || 0);
+				blue	= parseFloat(parameters[0][2] || 0);
 				
-				if (arguments[0].length == 4 && arguments[0][3] !== undefined)
-					alpha	= parseFloat(arguments[0][3] || 0);
+				if (parameters[0].length == 4 && parameters[0][3] !== undefined)
+					alpha	= parseFloat(parameters[0][3] || 0);
 				
-			} else if (arguments[0].r !== undefined || arguments[0].red !== undefined) {
-				red		= parseFloat(arguments[0].r || arguments[0].red || 0);
-				green	= parseFloat(arguments[0].g || arguments[0].green || 0);
-				blue	= parseFloat(arguments[0].b || arguments[0].blue || 0);
+			} else if (parameters[0].r !== undefined || parameters[0].red !== undefined) {
+				red		= parseFloat(parameters[0].r || parameters[0].red || 0);
+				green	= parseFloat(parameters[0].g || parameters[0].green || 0);
+				blue	= parseFloat(parameters[0].b || parameters[0].blue || 0);
 				
-				if (arguments[0].a !== undefined || arguments[0].alpha !== undefined)
-					alpha	= parseFloat(arguments[0].a || arguments[0].alpha || 0);
+				if (parameters[0].a !== undefined || parameters[0].alpha !== undefined)
+					alpha	= parseFloat(parameters[0].a || parameters[0].alpha || 0);
 
 			}
 		}
-	} else if (arguments.length == 3 || arguments.length == 4) {
-		red		= arguments[0] || 0;
-		green	= arguments[1] || 0;
-		blue	= arguments[2] || 0;
-		alpha	= (arguments[3] >= 0 && arguments[3] <= 1) ? arguments[3] : 1.0;
+	} else if (parameters.length == 3 || parameters.length == 4) {
+		red		= parameters[0] || 0;
+		green	= parameters[1] || 0;
+		blue	= parameters[2] || 0;
+		alpha	= (parameters[3] >= 0 && parameters[3] <= 1) ? parameters[3] : 1.0;
 	}
 	return { 'red': red, 'green': green, 'blue': blue, 'alpha': alpha };
 }
@@ -231,6 +229,12 @@ Color.prototype.toHex = function() {
     return "#" + componentToHex(this._r) + componentToHex(this._g) + componentToHex(this._b);
 }
 
+/**
+ * Return a color in string using #000000 format
+ * @method html
+ * @return {string} Return a string #000000 of color
+ */
+Color.prototype.html = Color.prototype.toHex;
 
 /* Default operations */
 

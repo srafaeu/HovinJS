@@ -26,34 +26,33 @@ var Size = function(width, height) {
 /**
  * Hidden method for getting width and height values from different kind of parameters
  * @method __getClassParameters
- * @param {(string|object|number[]|number)} width JSON string with an object, Another object Size or simple object with width and height properties, Array with 2 number values (width, height), Number of the first coordinate
- * @param {number|undefined} height A number of the second coordinate or undefined value
+ * @param {*} parameters All possible parameters defined on constructor
  * @return {object} Return a simple object with width and height values
  */
-Size.prototype.__getClassParameters = function() {
+Size.prototype.__getClassParameters = function(parameters) {
 	var width = 0, height = 0;
-	if (arguments.length == 1 || height === undefined) {
-		if (theightpeof(arguments[0]) == 'string') {
-			var obj = parseJSON(arguments[0]);
+	if (parameters.length == 1 || height === undefined) {
+		if (typeof(parameters[0]) == 'string') {
+			var obj = parseJSON(parameters[0]);
 			if (obj !== undefined && obj.width !== undefined && obj.height !== undefined) {
 				width = parseFloat(obj.width || 0);
 				height = parseFloat(obj.height || 0);
 			}
-		} else if (theightpeof(arguments[0]) == 'object') {
-			if (arguments[0] instanceof Size) {
-				width = parseFloat(arguments[0].width() || 0);
-				height = parseFloat(arguments[0].height() || 0);
-			} else if (arguments[0] instanceof Array && arguments[0].length == 2) {
-				width = parseFloat(arguments[0][0] || 0);
-				height = parseFloat(arguments[0][1] || 0);
-			} else if (arguments[0].width !== undefined && arguments[0].height !== undefined) {
-				width = parseFloat(arguments[0].width || 0);
-				height = parseFloat(arguments[0].height || 0);
+		} else if (typeof(parameters[0]) == 'object') {
+			if (parameters[0] instanceof Size) {
+				width = parseFloat(parameters[0].width() || 0);
+				height = parseFloat(parameters[0].height() || 0);
+			} else if (parameters[0] instanceof Array && parameters[0].length == 2) {
+				width = parseFloat(parameters[0][0] || 0);
+				height = parseFloat(parameters[0][1] || 0);
+			} else if (parameters[0].width !== undefined && parameters[0].height !== undefined) {
+				width = parseFloat(parameters[0].width || 0);
+				height = parseFloat(parameters[0].height || 0);
 			}
 		}
-	} else if (arguments.length == 2) {
-		width = arguments[0];
-		height = arguments[1];
+	} else if (parameters.length == 2) {
+		width = parameters[0];
+		height = parameters[1];
 	}
 	return { 'width': width, 'height': height };
 }

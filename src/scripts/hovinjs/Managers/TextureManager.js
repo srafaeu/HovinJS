@@ -22,7 +22,7 @@ TextureManager.prototype.__loader = function(event, manager, type, texture) {
 		if (this.isFinished())
 			this._loaded();
 	} else {
-		alert("ERROR");
+		throw "Cannot load image!";
 	}
 }
 

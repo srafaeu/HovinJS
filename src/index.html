@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Hovin JS</title>
+	<title>Shapes test</title>
 	<meta charset="utf-8" />
 	
 	<link rel="shortcut icon" type="image/png" href="./styles/favicon.ico" />
@@ -11,10 +11,30 @@
 	<script type="text/javascript" src="./scripts/jquery.min.js"></script>
 	<script type="text/javascript" src="./scripts/hovinjs/Basics/Core.js"></script>
 	<script type="text/javascript" src="./scripts/hovinjs/Basics/ConsoleHJS.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Basics/Angle.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Basics/Point2.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Basics/Random.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Basics/Size.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Basics/Vector2.js"></script>
+	
+	<script type="text/javascript" src="./scripts/hovinjs/Files/Texture.js"></script>
+	
+	<script type="text/javascript" src="./scripts/hovinjs/Styles/Color.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Styles/Font.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Styles/GradientStop.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Styles/Gradient.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Styles/Pattern.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Styles/Fill.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Styles/Stroke.js"></script>
+	
+	<script type="text/javascript" src="./scripts/hovinjs/Shapes/Rectangle.js"></script>
 	
 	<script type="text/javascript" src="./scripts/execute.js"></script>
 </head>
 <body>
-	<canvas id="viewport"></canvas>
+	<div class="controller">
+		<a id="play" class="playing">pause</a>
+	</div>
+	<canvas id="myCanvas" width="500" height="500" style="border:1px solid #999;"></canvas>
 </body>
 </html>

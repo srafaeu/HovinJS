@@ -33,34 +33,33 @@ var Point2 = function(x, y) {
 /**
  * Hidden method for getting x and y values from different kind of parameters
  * @method __getClassParameters
- * @param {(string|object|number[]|number)} x JSON string with an object, Another object Point2 or simple object with x and y properties, Array with 2 number values (x, y), Number of the first coordinate
- * @param {number|undefined} y A number of the second coordinate or undefined value
+ * @param {*} parameters All possible parameters defined on constructor
  * @return {object} Return a simple object with x and y values
  */
-Point2.prototype.__getClassParameters = function() {
+Point2.prototype.__getClassParameters = function(parameters) {
 	var x = 0, y = 0;
-	if (arguments.length == 1 || y === undefined) {
-		if (typeof(arguments[0]) == 'string') {
-			var obj = parseJSON(arguments[0]);
+	if (parameters.length == 1 || y === undefined) {
+		if (typeof(parameters[0]) == 'string') {
+			var obj = parseJSON(parameters[0]);
 			if (obj !== undefined && obj.x !== undefined && obj.y !== undefined) {
 				x = parseFloat(obj.x || 0);
 				y = parseFloat(obj.y || 0);
 			}
-		} else if (typeof(arguments[0]) == 'object') {
-			if (arguments[0] instanceof Point2) {
-				x = parseFloat(arguments[0].x() || 0);
-				y = parseFloat(arguments[0].y() || 0);
-			} else if (arguments[0] instanceof Array && arguments[0].length == 2) {
-				x = parseFloat(arguments[0][0] || 0);
-				y = parseFloat(arguments[0][1] || 0);
-			} else if (arguments[0].x !== undefined && arguments[0].y !== undefined) {
-				x = parseFloat(arguments[0].x || 0);
-				y = parseFloat(arguments[0].y || 0);
+		} else if (typeof(parameters[0]) == 'object') {
+			if (parameters[0] instanceof Point2) {
+				x = parseFloat(parameters[0].x() || 0);
+				y = parseFloat(parameters[0].y() || 0);
+			} else if (parameters[0] instanceof Array && parameters[0].length == 2) {
+				x = parseFloat(parameters[0][0] || 0);
+				y = parseFloat(parameters[0][1] || 0);
+			} else if (parameters[0].x !== undefined && parameters[0].y !== undefined) {
+				x = parseFloat(parameters[0].x || 0);
+				y = parseFloat(parameters[0].y || 0);
 			}
 		}
-	} else if (arguments.length == 2) {
-		x = arguments[0];
-		y = arguments[1];
+	} else if (parameters.length == 2) {
+		x = parameters[0];
+		y = parameters[1];
 	}
 	return { 'x': x, 'y': y };
 }

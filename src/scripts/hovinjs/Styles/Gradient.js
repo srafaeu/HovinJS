@@ -4,11 +4,11 @@
 	+	get e set Start
 	+	get e set End
 	+	get e set Stop
-		addColor
-		toRGBA
-		toHex
-		clone
-		serialize / toJSON / toString
+	+	addColor
+	+	removeColor
+	+	html
+	+	clone
+	+	serialize / toJSON / toString
 
 	::static
 */
@@ -68,8 +68,15 @@ Gradient.prototype.stop = function(index, stop) {
 	return this;
 };
 
+
 /* Inserts */
 
+/**
+ * Add a GradientStop to the gradient
+ * @method addColor
+ * @param {GradientStop|number} stop A GradientStop object or a number of a new stop position
+ * @param {Color|undefined} color A color reference to a new stop position or undefined for add a GradientStop object
+ */
 Gradient.prototype.addColor = function (stop, color) {
 	if (color == undefined && stop instanceof GradientStop)
 		this._stops.push(stop);
@@ -77,47 +84,78 @@ Gradient.prototype.addColor = function (stop, color) {
 		this._stops.push(new GradientStop(stop, color));
 };
 
+/**
+ * Remove a GradientStop of the gradient
+ * @method removeColor
+ * @param {number} stop A GradientStop object or a number of a new stop position
+ * @param {Color|undefined} color A color reference to a new stop position or undefined for GradientStop 
+ */
+Gradient.prototype.removeColor = function (index) {
+	return this._stops.splice(index, 1);
+};
 
 
 /* Html */
 
-Gradient.prototype.html = function(context, startPoint2) {
-	var i, grd;
-	var x = this._start.x();
-	var y = this._start.y();
+/**
+ * Create a CanvasGradient to use as fill or stroke style
+ * @method html
+ * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
+ * @param {Point2|Vector2|undefined} position Start position as Point2 or Vector2 for move current gradient or undefined to use current start position
+ * @return {CanvasGradient} Return a CanvasGradient object to use as style
+ */
+Gradient.prototype.html = function(context, startPosition) {
+	var i, grd,
+		x = this._start.x(),
+		y = this._start.y();
 	
-	if (startPoint2 !== undefined) {
-		x += startPoint2.x();
-		y += startPoint2.y();
+	if (startPosition !== undefined && startPosition instanceof Point2 || startPosition instanceof Vector2) {
+		x += startPosition.x();
+		y += startPosition.y();
 	}
 	
 	grd	= context.createLinearGradient(x, y, x + this._end.x(), y + this._end.y());
 	
-	for (var i = 0; i < this._stops.length; i++) {
-		stop = this._stops[i];
-		grd.addColorStop(stop.stop, stop.color.toHex());
-	}
+	for (i = 0; i < this._stops.length; i++)
+		grd.addColorStop(this._stops[i].stop(), this._stops[i].color().toHex());
 	
 	return grd;
 }
 
 
+/* Default operations */
+
+/**
+ * Clone the GradientStop to a new object
+ * @method clone
+ * @return {GradientStop} Return a new object reference
+ */
+GradientStop.prototype.clone = function() {
+	return new Gradient(this._start, this._end, this._stops);
+}
+
+
 /* Serialization */
 
-Gradient.prototype.stopsToJson = 
-Gradient.prototype.stopsToString = function() {
-	var txt = "[";
-
-	for (var i = 0; i < this._stops.length; i++)
-		txt += "{ stop: " + this._stops[i].stop + ", color: " + this._stops[i].color + " }";
-
-	txt += "]";
-	return txt;
-};
-
-Gradient.prototype.toJson = 
-Gradient.prototype.toString = 
+/**
+ * Serialize a object into a string
+ * @method serialize
+ * @return {string} Return a string JSON of the object
+ */
 Gradient.prototype.serialize = function() {
-	return "{ start: " + this._start.toString() + ", end: " + this._start.toString() + ", stops: " + this.stopsToJson() + " }";
+	return "{ start: " + this._start + ", end: " + this._end + ", stops: " + this._end + " }";
 };
 
+/**
+ * Serialize a object into a string
+ * @method toJson
+ * @return {string} Return a string JSON of the object
+ */
+Gradient.prototype.toJson = Gradient.prototype.serialize;
+
+/**
+ * Serialize a object into a string
+ * @method toString
+ * @return {string} Return a string JSON of the object
+ */
+Gradient.prototype.toString = Gradient.prototype.serialize;

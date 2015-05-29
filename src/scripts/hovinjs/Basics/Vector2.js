@@ -46,15 +46,15 @@ inheritPrototype(Vector2, Point2);
 /**
  * Hidden method for getting x and y values from different kind of parameters
  * @method __getClassParameters
- * @param {(string|object|number[]|number)} x JSON string with an object, Another object Point2, object Vector2 or simple object with x and y or angle and magnitude properties, Array with 2 number values (x, y), Number of the first coordinate
- * @param {number|undefined} y A number of the second coordinate or undefined value
+ * @param {*} parameters All possible parameters defined on constructor
  * @return {object} Return a simple object with x and y values
  */
-Vector2.prototype.__getClassParameters = function() {
+Vector2.prototype.__getClassParameters = function(parameters) {
 	var x = 0, y = 0;
-	if (arguments.length == 1 || y === undefined) {
-		if (typeof(arguments[0]) == 'string') {
-			var obj = parseJSON(arguments[0]);
+	
+	if (parameters.length == 1) {
+		if (typeof(parameters[0]) == 'string') {
+			var obj = parseJSON(parameters[0]);
 			if (obj !== undefined && obj.x !== undefined && obj.y !== undefined) {
 				x = parseFloat(obj.x || 0);
 				y = parseFloat(obj.y || 0);
@@ -62,25 +62,26 @@ Vector2.prototype.__getClassParameters = function() {
 				x = obj.magnitude * Math.cos(obj.angle);
 				y = obj.magnitude * Math.sin(obj.angle);
 			}
-		} else if (typeof(arguments[0]) == 'object') {
-			if (arguments[0] instanceof Point2 || arguments[0] instanceof Vector2) {
-				x = parseFloat(arguments[0].x() || 0);
-				y = parseFloat(arguments[0].y() || 0);
-			} else if (arguments[0] instanceof Array && arguments[0].length == 2) {
-				x = parseFloat(arguments[0][0] || 0);
-				y = parseFloat(arguments[0][1] || 0);
-			} else if (arguments[0].x !== undefined && arguments[0].y !== undefined) {
-				x = parseFloat(arguments[0].x || 0);
-				y = parseFloat(arguments[0].y || 0);
-			} else if (arguments[0].angle !== undefined && arguments[0].magnitude !== undefined) {
-				x = arguments[0].magnitude * Math.cos(arguments[0].angle);
-				y = arguments[0].magnitude * Math.sin(arguments[0].angle);
+		} else if (typeof(parameters[0]) == 'object') {
+			if (parameters[0] instanceof Point2 || parameters[0] instanceof Vector2) {
+				x = parseFloat(parameters[0].x() || 0);
+				y = parseFloat(parameters[0].y() || 0);
+			} else if (parameters[0] instanceof Array && parameters[0].length == 2) {
+				x = parseFloat(parameters[0][0] || 0);
+				y = parseFloat(parameters[0][1] || 0);
+			} else if (parameters[0].x !== undefined && parameters[0].y !== undefined) {
+				x = parseFloat(parameters[0].x || 0);
+				y = parseFloat(parameters[0].y || 0);
+			} else if (parameters[0].angle !== undefined && parameters[0].magnitude !== undefined) {
+				x = parameters[0].magnitude * Math.cos(parameters[0].angle);
+				y = parameters[0].magnitude * Math.sin(parameters[0].angle);
 			}
 		}
-	} else if (arguments.length == 2) {
-		x = arguments[0];
-		y = arguments[1];
+	} else if (parameters.length == 2) {
+		x = parameters[0];
+		y = parameters[1];
 	}
+	
 	return { 'x': x, 'y': y };
 }
 
