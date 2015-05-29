@@ -259,12 +259,12 @@ Color.prototype.serialize = function() {
  * @method toJson
  * @return {string} Return a string JSON of the object
  */
-Color.prototype.toJson		= Color.prototype.serialize;
+Color.prototype.toJson = Color.prototype.serialize;
 
 /**
  * Serialize a object into a string
  * @method toString
  * @return {string} Return a string JSON of the object
  */
-Color.prototype.toString	= Color.prototype.serialize;
+Color.prototype.toString = Color.prototype.serialize;
 
