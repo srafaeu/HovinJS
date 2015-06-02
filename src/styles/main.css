@@ -4,8 +4,16 @@ body {
 }
 
 canvas {
-	background-color: #FFF;
+	background-color: #000;
+	background-repeat: repeat;
+	background-position: top left;
+	border: 1px solid #999;
 }
+
+.grid05 { background-image: url('images/grid05x05.png'); }
+.grid10 { background-image: url('images/grid10x10.png'); }
+.grid25 { background-image: url('images/grid25x25.png'); }
+.grid50 { background-image: url('images/grid50x50.png'); }
 
 
 div.controller {

@@ -48,8 +48,8 @@ Stroke.prototype.width = function(width) {
  * @param {Point2|Vector2} position Start position as Point2 or Vector2 for move current gradient
  */
 Stroke.prototype.html = function(context, position) {
-	context.lineWidth	= this._stroke.width();
-	context.strokeStyle	= this._stroke.style().html(context, position);
+	context.lineWidth	= this.width();
+	context.strokeStyle	= this.style().html(context, position);
 	context.stroke();
 }
 

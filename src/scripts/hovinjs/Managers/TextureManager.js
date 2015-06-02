@@ -13,10 +13,7 @@ var TextureManager = function(loaded) {
 
 TextureManager.prototype.__loader = function(event, manager, type, texture) {
 	if (type == 'load') {
-		texture.width(texture.image().width);
-		texture.height(texture.image().height);
-		texture.isLoaded(true);
-		
+		texture.initialize();
 		this._total++;
 		
 		if (this.isFinished())

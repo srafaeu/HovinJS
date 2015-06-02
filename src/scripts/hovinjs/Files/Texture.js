@@ -49,17 +49,11 @@ var Texture = function(id, source, callback) {
 Texture.prototype.file = function() { return this._file; };
 
 /**
- * Get or set the size of image
+ * Get the size of image
  * @method size
- * @param {Size|undefined} size (set) Size object to define width and height of image or (get) undefined to get the size
- * @return {Texture|Size} (set) Return a Texture object reference or (get) return Size object
+ * @return {Size} Return size of the image
  */
-Texture.prototype.size = function(size) {
-	if (size === undefined) return this._size;
-	if (size instanceof Size)
-		this._size = size;
-	return this;
-};
+Texture.prototype.size = function() { return this._size; };
 
 /**
  * Get value width
@@ -92,28 +86,49 @@ Texture.prototype.isLoaded = function(loaded) {
 };
 
 
+/* Initialize */
+
+/**
+ * Initialize texture after loaded
+ * @method initialize
+ */
+Texture.prototype.initialize = function() {
+	this._size = new Size(this._file.width, this._file.height);
+	this._isLoaded = true;
+}
+
 /* Draw */
 
 /**
  * Draw the image in a specified position
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
+ * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {Point2|Vector2} position Position of image as Point2 or Vector2
  * @param {number} angle Angle for rotating image in Radians
  */
-Texture.prototype.draw = function(context, position, angle) {
-	var xf	= position.x(),
+Texture.prototype.draw = function(context, centered, position, angle) {
+	var x0, y0,
+		xf	= position.x(),
 		yf	= position.y(),
 		w	= this._size.width(),
 		h	= this._size.height();
-
+	
 	context.save();
 	context.translate(xf, yf);
 	
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	context.drawImage(this._image, -(width / 2), -(height / 2), width, height);
+	if (centered) {
+		x0 = -(w / 2);
+		y0 = -(h / 2);
+	} else {
+		x0 = 0;
+		y0 = 0;
+	}
+	context.drawImage(this._file, x0, y0, w, h);
+	context.restore();
 }
 
 

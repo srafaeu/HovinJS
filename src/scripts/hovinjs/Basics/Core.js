@@ -4,12 +4,12 @@ if (typeof Object.create !== 'function') {
 	 * Create an object based on existing object prototype
 	 * @method create
 	 * @external Object
-	 * @param {object} o Reference to the object
+	 * @param {object} parentObj Reference to the object
 	 */
-	Object.create = function (o) {
-		function F() {}
-		F.prototype = o;
-		return new F();
+	Object.create = function (parentObj) {
+		function TmpObj() {}
+		TmpObj.prototype = parentObj;
+		return new TmpObj();
 	};
 }
 

@@ -21,16 +21,8 @@
  * @param {Fill|Stroke|undefined} style2 Style for Stroke or Fill of the rectangle
  */
 var Rectangle = function(position, size, style1, style2) {
-	if (position instanceof Vector2 || position instanceof Point2)
-		this._position = new Vector2(position.x(), position.y());
-	else
-		this._position = new Vector2(0, 0);
-	
-	if (size instanceof Size)
-		this._size = size
-	else
-		this._size = new Size(0, 0);
-	
+	this._position	= (position instanceof Vector2 || position instanceof Point2) ? new Vector2(position.x(), position.y()) : new Vector2(0, 0);
+	this._size		= (size instanceof Size) ? size : new Size(0, 0);
 	
 	if (style1 === undefined && style2 === undefined) {
 		throw "Cannot draw a rectangle without both fill and stroke property";
@@ -55,7 +47,7 @@ var Rectangle = function(position, size, style1, style2) {
 /**
  * Get or set position of rectangle
  * @method position
- * @param {Vector2} start (set) A point object to define the position relative to canvas (get) undefined to get the position value
+ * @param {Vector2} position (set) A point object to define the position relative to canvas (get) undefined to get the position value
  * @return {Rectangle|Vector2} (set) Return a object reference or (get) return the position relative to canvas
  */
 Rectangle.prototype.position = function(position) {
