@@ -58,7 +58,7 @@ Texture.prototype.size = function() { return this._size; };
 /**
  * Get value width
  * @method width
- * @return {number} Return position width value
+ * @return {number} Return width value
  */
 Texture.prototype.width = function() {
 	return this._size.width();
@@ -67,7 +67,7 @@ Texture.prototype.width = function() {
 /**
  * Get value height
  * @method height
- * @return {number} Return position height value
+ * @return {number} Return height value
  */
 Texture.prototype.height = function(height) {
 	return this._size.height();
@@ -103,11 +103,11 @@ Texture.prototype.initialize = function() {
  * Draw the image in a specified position
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
- * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {Point2|Vector2} position Position of image as Point2 or Vector2
+ * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {number} angle Angle for rotating image in Radians
  */
-Texture.prototype.draw = function(context, centered, position, angle) {
+Texture.prototype.draw = function(context, position, centered, angle) {
 	var x0, y0,
 		xf	= position.x(),
 		yf	= position.y(),

@@ -1,7 +1,6 @@
 /*
 	Description
 	::public
-	+	get e set Position
 	+	get e set Size
 	+	get e set Sides
 	+	get e set Fill
@@ -17,14 +16,12 @@
 /**
  * @classdesc Polygon drawable shape
  * @class Polygon
- * @param {Vector2|Point2} position A point or vector object to define the initial position of the object
  * @param {Size} size Size (width, height) of rectangle
  * @param {number} sides Number of sides of polygon
  * @param {Fill|Stroke} style1 Style for Stroke or Fill of the polygon
  * @param {Fill|Stroke|undefined} style2 Style for Stroke or Fill of the polygon
  */
-var Polygon = function(position, size, sides, style1, style2) {
-	this._position	= (position instanceof Vector2 || position instanceof Point2) ? new Vector2(position.x(), position.y()) : new Vector2(0, 0);
+var Polygon = function(size, sides, style1, style2) {
 	this._sides		= (typeof(sides) == 'number') ? sides : 3;
 	
 	if (size instanceof Size) 
@@ -35,7 +32,7 @@ var Polygon = function(position, size, sides, style1, style2) {
 		this._size = new Size(0, 0);
 	
 	if (style1 === undefined && style2 === undefined) {
-		throw "Cannot draw a rectangle without both fill and stroke property";
+		throw "Cannot draw a polygon without both fill and stroke property";
 	} else {
 		if (style1 instanceof Stroke)
 			this._stroke = style1;
@@ -55,18 +52,6 @@ var Polygon = function(position, size, sides, style1, style2) {
 
 
 /* Getters and setters */
-
-/**
- * Get or set position of polygon
- * @method position
- * @param {Vector2} start (set) A point object to define the position relative to canvas (get) undefined to get the position value
- * @return {Polygon|Vector2} (set) Return a object reference or (get) return the position relative to canvas
- */
-Polygon.prototype.position = function(position) {
-	if (position === undefined) return this._position;
-	this._position = position;
-	return this;
-};
 
 /**
  * Get or set the size of polygon
@@ -147,12 +132,14 @@ Polygon.prototype.__build = function() {
  * Draw the polygon
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
+ * @param {Vector2|Point2} position A point or vector object to define the position of the object
+ * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {number|undefined} angle Rotation angle in radians on drawing polygon
  */
-Polygon.prototype.draw = function(context, angle) {
-	var i, l,
-		xf = this._position.x(),
-		yf = this._position.y();
+Polygon.prototype.draw = function(context, position, centered, angle) {
+	var i, l, x0, y0,
+		xf = position.x(),
+		yf = position.y();
 	
 	context.save();
 	context.translate(xf, yf);
@@ -160,8 +147,16 @@ Polygon.prototype.draw = function(context, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
+	if (centered) {
+		x0 = -(w / 2);
+		y0 = -(h / 2);
+	} else {
+		x0 = 0;
+		y0 = 0;
+	}
+	
 	context.beginPath();
-	context.moveTo(this._points[0].x(), this._points[0].y());
+	context.moveTo(this._points[0].x() + x0, this._points[0].y() + y0);
 	
 	for (i = 1, l = this._points.length; i < l; i++)
 		context.lineTo(this._points[i].x(), this._points[i].y());
@@ -169,10 +164,10 @@ Polygon.prototype.draw = function(context, angle) {
 	context.closePath();
 	
 	if (this._fill)
-		this._fill.html(context, this._position);
+		this._fill.html(context, position);
 	
 	if (this._stroke)
-		this._stroke.html(context, this._position);
+		this._stroke.html(context, position);
 	
 	context.restore();
 }
@@ -186,7 +181,7 @@ Polygon.prototype.draw = function(context, angle) {
  * @return {Polygon} Return a new object reference
  */
 Polygon.prototype.clone = function() {
-	return new Polygon(this._position, this._size, this._sides, this._fill, this._stroke);
+	return new Polygon(this._size, this._sides, this._fill, this._stroke);
 }
 
 
@@ -198,7 +193,7 @@ Polygon.prototype.clone = function() {
  * @return {string} Return a string JSON of the object
  */
 Polygon.prototype.serialize = function() {
-	return '{ "position":"' + this._position + '", "size": ' + this._size + '", "sides": ' + this._sides + ', "fill":' + this._fill + ', "stroke":' + this._stroke + ' }';
+	return '{ "size": ' + this._size + '", "sides": ' + this._sides + ', "fill":' + this._fill + ', "stroke":' + this._stroke + ' }';
 }
 
 /**

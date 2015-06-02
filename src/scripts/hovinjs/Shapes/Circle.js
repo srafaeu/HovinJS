@@ -1,7 +1,6 @@
 /*
 	Description
 	::public
-	+	get e set Position
 	+	get e set Radius
 	+	get e set Fill
 	+	get e set Stroke
@@ -15,13 +14,11 @@
 /**
  * @classdesc Circle drawable shape
  * @class Circle
- * @param {Vector2|Point2} position A point or vector object to define the initial position of the object
  * @param {number} radius Radius of circle to determine its size
  * @param {Fill|Stroke} style1 Style for Stroke or Fill of the circle
  * @param {Fill|Stroke|undefined} style2 Style for Stroke or Fill of the circle
  */
-var Circle = function(position, radius, style1, style2) {
-	this._position	= (position instanceof Vector2 || position instanceof Point2) ? new Vector2(position.x(), position.y()) : new Vector2(0, 0);
+var Circle = function(radius, style1, style2) {
 	this._radius	= (typeof(radius) == 'number') ? radius : 1;
 	
 	if (style1 === undefined && style2 === undefined) {
@@ -43,18 +40,6 @@ var Circle = function(position, radius, style1, style2) {
 
 
 /* Getters and setters */
-
-/**
- * Get or set position of circle
- * @method position
- * @param {Vector2} start (set) A point object to define the position relative to canvas (get) undefined to get the position value
- * @return {Circle|Vector2} (set) Return a object reference or (get) return the position relative to canvas
- */
-Circle.prototype.position = function(position) {
-	if (position === undefined) return this._position;
-	this._position = position;
-	return this;
-};
 
 /**
  * Get or set the radius of circle
@@ -100,12 +85,15 @@ Circle.prototype.stroke = function(stroke) {
 /**
  * Draw the circle
  * @method draw
- * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
+ * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context
+ * @param {Vector2|Point2} position A point or vector object to define the position of the object
+ * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {number|undefined} angle Rotation angle in radians on drawing circle
  */
-Circle.prototype.draw = function(context, angle) {
-	var xf = this._position.x(),
-		yf = this._position.y();
+Circle.prototype.draw = function(context, position, centered, angle) {
+	var x0, y0,
+		xf = position.x(),
+		yf = position.y();
 	
 	context.save();
 	context.translate(xf, yf);
@@ -113,8 +101,16 @@ Circle.prototype.draw = function(context, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
+	if (centered) {
+		x0 = 0;
+		y0 = 0;
+	} else {
+		x0 = this._radius;
+		y0 = this._radius;
+	}
+	
 	context.beginPath();
-    context.arc(0, 0, this._radius, 0, Math.PI * 2, false);
+    context.arc(x0, y0, this._radius, 0, Math.PI * 2, false);
 	
 	if (this._fill)
 		this._fill.html(context, this._position);

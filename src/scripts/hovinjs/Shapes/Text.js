@@ -1,7 +1,6 @@
 /*
 	Description
 	::public
-	+	get e set Position
 	+	get e set Text
 	+	get e set Align
 	+	get e set Fill
@@ -18,14 +17,12 @@
 /**
  * @classdesc Text drawable shape
  * @class Text
- * @param {Vector2|Point2} position A point or vector object to define the initial position of the object
  * @param {string} text Text for drawing
  * @param {AlignType} align Type of text alignment
  * @param {Fill|Stroke} style1 Style for Stroke or Fill of the text
  * @param {Fill|Stroke|undefined} style2 Style for Stroke or Fill of the text
  */
-var Text = function(position, text, align, style1, style2) {
-	this._position	= (position instanceof Vector2 || position instanceof Point2) ? new Vector2(position.x(), position.y()) : new Vector2(0, 0);
+var Text = function(text, align, style1, style2) {
 	this._text		= (text != undefined) ? text + '' : '';
 	this._alignment = (Text.ALIGNMENTS.toString().indexOf(align) > 0) ? align : Text.ALIGN_LEFT;
 
@@ -48,18 +45,6 @@ var Text = function(position, text, align, style1, style2) {
 
 
 /* Getters and setters */
-
-/**
- * Get or set position of text
- * @method position
- * @param {Vector2} position (set) A point object to define the position relative to canvas (get) undefined to get the position value
- * @return {Text|Vector2} (set) Return a object reference or (get) return the position relative to canvas
- */
-Text.prototype.position = function(position) {
-	if (position === undefined) return this._position;
-	this._position = position;
-	return this;
-};
 
 /**
  * Get or set the string of text
@@ -119,11 +104,14 @@ Text.prototype.stroke = function(stroke) {
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Font} font Font object to define font used in the text
+ * @param {Vector2|Point2} position A point or vector object to define the position of the object
+ * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {number|undefined} angle Rotation angle in radians on drawing text
  */
-Text.prototype.draw = function(context, font, angle) {
-	var xf = this._position.x(),
-		yf = this._position.y();
+Text.prototype.draw = function(context, font, position, centered, angle) {
+	var x0, y0,
+		xf = position.x(),
+		yf = position.y();
 	
 	context.save();
 	context.translate(xf, yf);
@@ -134,14 +122,22 @@ Text.prototype.draw = function(context, font, angle) {
 	context.font = font.html();
 	content.textAlign = this._alignment;
 	
+	if (centered) {
+		x0 = -(w / 2);
+		y0 = -(h / 2);
+	} else {
+		x0 = 0;
+		y0 = 0;
+	}
+	
 	if (this._fill) {
-		context.fillStyle = this._fill.html(context, this._position);
-		context.fillText(this._text, 0, 0);
+		context.fillStyle = this._fill.html(context, position);
+		context.fillText(this._text, x0, y0);
 	}
 	if (this._stroke) {
 		context.lineWidth	= this._stroke.width();
 		context.strokeStyle	= this._stroke.style().html(context);
-		context.strokeText(this._text, 0, 0);
+		context.strokeText(this._text, x0, y0);
 	}
 	
 	context.restore();
@@ -156,7 +152,7 @@ Text.prototype.draw = function(context, font, angle) {
  * @return {Text} Return a new object reference
  */
 Text.prototype.clone = function() {
-	return new Text(this._position, this._text, this._align, this._fill, this._stroke);
+	return new Text(this._text, this._align, this._fill, this._stroke);
 }
 
 
@@ -168,7 +164,7 @@ Text.prototype.clone = function() {
  * @return {string} Return a string JSON of the object
  */
 Text.prototype.serialize = function() {
-	return '{ "position":"' + this._position + '", "text": "' + this._text + '", "align":' + this._align + ', "fill":' + this._fill + ', "stroke":' + this._stroke + ' }';
+	return '{ "text": "' + this._text + '", "align":' + this._align + ', "fill":' + this._fill + ', "stroke":' + this._stroke + ' }';
 }
 
 /**

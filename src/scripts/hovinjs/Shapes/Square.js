@@ -1,7 +1,6 @@
 /*
 	Description
 	::public
-	+	get e set Position
 	+	get e set Size
 	+	get e set Fill
 	+	get e set Stroke
@@ -15,13 +14,11 @@
 /**
  * @classdesc Square drawable shape
  * @class Square
- * @param {Vector2|Point2} position A point or vector object to define the initial position of the object
  * @param {number} size Size of square
  * @param {Fill|Stroke} style1 Style for Stroke or Fill of the square
  * @param {Fill|Stroke|undefined} style2 Style for Stroke or Fill of the square
  */
-var Square = function(position, size, style1, style2) {
-	this._position	= (position instanceof Vector2 || position instanceof Point2) ? new Vector2(position.x(), position.y()) : new Vector2(0, 0);
+var Square = function(size, style1, style2) {
 	this._size		= (typeof(size) == 'number') ? size : 1;
 	
 	if (style1 === undefined && style2 === undefined) {
@@ -43,18 +40,6 @@ var Square = function(position, size, style1, style2) {
 
 
 /* Getters and setters */
-
-/**
- * Get or set position of square
- * @method position
- * @param {Vector2} start (set) A point object to define the position relative to canvas (get) undefined to get the position value
- * @return {Square|Vector2} (set) Return a object reference or (get) return the position relative to canvas
- */
-Square.prototype.position = function(position) {
-	if (position === undefined) return this._position;
-	this._position = position;
-	return this;
-};
 
 /**
  * Get or set the size of square
@@ -101,11 +86,14 @@ Square.prototype.stroke = function(stroke) {
  * Draw the square
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
+ * @param {Vector2|Point2} position A point or vector object to define the position of the object
+ * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {number|undefined} angle Rotation angle in radians on drawing square
  */
-Square.prototype.draw = function(context, angle) {
-	var xf = this._position.x(),
-		yf = this._position.y(),
+Square.prototype.draw = function(context, position, centered, angle) {
+	var x0, y0,
+		xf = position.x(),
+		yf = position.y(),
 		s  = this._size,
 		hs = this._size / 2;
 	
@@ -115,14 +103,21 @@ Square.prototype.draw = function(context, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
+	if (centered) {
+		x0 = -hs;
+		y0 = -hs;
+	} else {
+		x0 = 0;
+		y0 = 0;
+	}
 	context.beginPath();
 	context.rect(-(hs), -(hs), s, s);
 	
 	if (this._fill)
-		this._fill.html(context, this._position);
+		this._fill.html(context, position);
 	
 	if (this._stroke)
-		this._stroke.html(context, this._position);
+		this._stroke.html(context, position);
 	
 	context.restore();
 }
@@ -136,7 +131,7 @@ Square.prototype.draw = function(context, angle) {
  * @return {Square} Return a new object reference
  */
 Square.prototype.clone = function() {
-	return new Square(this._position, this._size, this._fill, this._stroke);
+	return new Square(this._size, this._fill, this._stroke);
 }
 
 
@@ -148,7 +143,7 @@ Square.prototype.clone = function() {
  * @return {string} Return a string JSON of the object
  */
 Square.prototype.serialize = function() {
-	return '{ "position":"' + this._position + '", "size": ' + this._size + ', "fill":' + this._fill + ', "stroke":' + this._stroke + ' }';
+	return '{ "size": ' + this._size + ', "fill":' + this._fill + ', "stroke":' + this._stroke + ' }';
 }
 
 /**
@@ -164,27 +159,3 @@ Square.prototype.toJson	= Square.prototype.serialize;
  * @return {string} Return a string JSON of the object
  */
 Square.prototype.toString	= Square.prototype.serialize;
-
-
-
-
-/* Drawable
-
-Square.prototype.draw = function(context) {
-	var x = this._position.x();
-	var y = this._position.y();
-	
-	context.beginPath();
-	context.rect(x, y, this._size, this._size)
-	
-	if (this._fill) {
-		context.fillStyle = this._fill.html(context, this._position);
-		context.fill();
-	}
-	if (this._stroke) {
-		context.lineWidth	= this._stroke.width();
-		context.strokeStyle	= this._stroke.style().html(context);
-		context.stroke();
-	}
-}
- */

@@ -1,7 +1,6 @@
 /*
 	Description
 	::public
-	+	get e set Position
 	+	get e set Stroke
 	+	get e set Point
 	+	get e set Points
@@ -18,12 +17,10 @@
 /**
  * @classdesc Path drawable shape
  * @class Path
- * @param {Vector2|Point2} position A point or vector object to define the initial position of the object
  * @param {Stroke} stroke Style for stroke of path lines
  * @param {Point2[]|undefined} points Array of points to draw a path line
  */
-var Path = function(position, stroke, points) {
-	this._position = position || new Vector2(0, 0);
+var Path = function(stroke, points) {
 	this._points = [];
 	
 	if (points !== undefined && points instanceof Array)
@@ -38,18 +35,6 @@ var Path = function(position, stroke, points) {
 
 
 /* Getters and setters */
-
-/**
- * Get or set position of path
- * @method position
- * @param {Vector2} position (set) A point object to define the position relative to canvas (get) undefined to get the position value
- * @return {Path|Vector2} (set) Return a object reference or (get) return the position relative to canvas
- */
-Path.prototype.position = function(position) {
-	if (position === undefined) return this._position;
-	this._position = position;
-	return this;
-};
 
 /**
  * Get a specified point of Path
@@ -133,11 +118,14 @@ Path.prototype.remove = function (index) {
  * Draw the path
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
+ * @param {Vector2|Point2} position A point or vector object to define the position of the object
+ * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {number|undefined} angle Rotation angle in radians on drawing path
  */
-Path.prototype.draw = function(context, angle) {
-	var xf = this._position.x(),
-		yf = this._position.y();
+Path.prototype.draw = function(context, position, centered, angle) {
+	var x0, y0,
+		xf = position.x(),
+		yf = position.y();
 	
 	context.save();
 	context.translate(xf, yf);
@@ -145,8 +133,16 @@ Path.prototype.draw = function(context, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
+	if (centered) {
+		x0 = -(w / 2);
+		y0 = -(h / 2);
+	} else {
+		x0 = 0;
+		y0 = 0;
+	}
+	
 	context.beginPath();
-	context.moveTo(0, 0);
+	context.moveTo(x0, y0);
 	
 	for (var i = 0; i < this._points.length; i++)
 		context.lineTo(this._points[i].x(), this._points[i].y());

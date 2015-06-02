@@ -1,9 +1,11 @@
 /* class SteeringBehavior */
-var SteeringBehavior = function() {
-	this._wanderJitter		= 4.0;
-	this._wanderRadius		= 20.0;
-	this._wanderDistance	= 10.0;
-};
+var SteeringBehavior = function() {};
+
+SteeringBehavior.wanderJitter	= 4.0;
+
+SteeringBehavior.wanderRadius	= 20.0;
+
+SteeringBehavior.wanderDistance	= 10.0;
 
 // IVehicle vehicle, Vector2 target
 SteeringBehavior.prototype.seek = function(vehicle, target) {
@@ -75,44 +77,32 @@ SteeringBehavior.prototype.pursuit = function(pursuer, evader) {
 }
 
 // IVehicle vehicle
-SteeringBehavior.prototype.wander = function(vehicle) {
+SteeringBehavior.wander = function(vehicle) {
 	var wanderTarget, targetLocal;
 
-	wanderTarget = new Vector2(SteeringBehavior.randomClamped() * this._wanderJitter, SteeringBehavior.randomClamped() * this._wanderJitter);
+	wanderTarget = new Vector2(SteeringBehavior.randomClamped() * SteeringBehavior.wanderJitter, SteeringBehavior.randomClamped() * SteeringBehavior.wanderJitter);
 	wanderTarget.normalize();
-	wanderTarget.multiply(this._wanderRadius);
+	wanderTarget.multiply(SteeringBehavior.wanderRadius);
 	
 	targetLocal = wanderTarget.clone();
-	targetLocal.add(new Vector2(this._wanderDistance, 0)).subtract(vehicle.position());
+	targetLocal.add(new Vector2(SteeringBehavior.wanderDistance, 0)).subtract(vehicle.position());
 
 	return targetLocal;
 }
 
 // static double
-SteeringBehavior.randomClamped = function()
-{
+SteeringBehavior.randomClamped = function() {
 	var random = new Random();
 
-	return ((random.nextInt(100000) % 2) == 0) ? random.nextDouble() : random.NextDouble();
+	return ((random.nextInt(100000) % 2) == 0) ? -random.next() : random.next();
 }
 
-
-/* SteeringBehavior */
-
-SteeringBehavior.prototype.toJson = 
-SteeringBehavior.prototype.toString = 
-SteeringBehavior.prototype.serialize = function() {
-	return "{ wanderJitter: " + this._wanderJitter + ", wanderRadius: " + this._wanderRadius + ", wanderDistance: " + this._wanderDistance + " }";
-}
-
-
-/* interface IVehicle */
+/** @interface IVehicle */
 var IVehicle = function() {}
 
-IVehicle.position		= function(){};
-IVehicle.velocity 		= function(){};
-IVehicle.direction		= function(){};
-IVehicle.mass			= function(){};
-IVehicle.maxSpeed		= function(){};
-IVehicle.maxForce		= function(){};
-IVehicle.timeElapsed	= function(){};
+IVehicle.prototype.position		= function(){};
+IVehicle.prototype.velocity 	= function(){};
+IVehicle.prototype.direction	= function(){};
+IVehicle.prototype.mass			= function(){};
+IVehicle.prototype.maxSpeed		= function(){};
+IVehicle.prototype.maxForce		= function(){};
