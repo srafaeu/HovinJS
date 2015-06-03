@@ -104,15 +104,17 @@ Texture.prototype.initialize = function() {
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Point2|Vector2} position Position of image as Point2 or Vector2
- * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
+ * @param {boolean|Point2} pivot Boolean true to draw based on the center or false if is based on the top left or a Point2 object to define pivot point
  * @param {number} angle Angle for rotating image in Radians
  */
-Texture.prototype.draw = function(context, position, centered, angle) {
-	var x0, y0,
+Texture.prototype.draw = function(context, position, pivot, angle) {
+	var p0	= new Point2(),
 		xf	= position.x(),
 		yf	= position.y(),
 		w	= this._size.width(),
-		h	= this._size.height();
+		h	= this._size.height(),
+		hw	= w / 2,
+		hh	= h / 2;
 	
 	context.save();
 	context.translate(xf, yf);
@@ -120,14 +122,12 @@ Texture.prototype.draw = function(context, position, centered, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	if (centered) {
-		x0 = -(w / 2);
-		y0 = -(h / 2);
-	} else {
-		x0 = 0;
-		y0 = 0;
-	}
-	context.drawImage(this._file, x0, y0, w, h);
+	if (pivot === true)
+		p0 = new Point2(-hw, -hh);
+	else if (pivot instanceof Point2)
+		p0 = new Point2(pivot.x(), pivot.y());
+	
+	context.drawImage(this._file, p0.x(), p0.y(), w, h);
 	context.restore();
 }
 

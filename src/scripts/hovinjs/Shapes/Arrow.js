@@ -63,10 +63,10 @@ Arrow.prototype.stroke = function(stroke) {
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Vector2|Point2} position A point or vector object to define the position of the object
- * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
+ * @param {boolean|Point2} pivot Boolean true to draw based on the center or false if is based on the top left or a Point2 object to define pivot point
  * @param {number|undefined} angle Rotation angle in radians on drawing arrow
  */
-Arrow.prototype.draw = function(context, position, centered, angle) {
+Arrow.prototype.draw = function(context, position, pivot, angle) {
 	var s,
 		p0 = new Point2(),
 		xf = position.x(),
@@ -79,8 +79,10 @@ Arrow.prototype.draw = function(context, position, centered, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	if (centered)
+	if (pivot === true)
 		p0 = new Point2(-hs, 0);
+	else if (pivot instanceof Point2)
+		p0 = new Point2(pivot.x(), 0);
 	
 	s = this._size + p0.x();
 	
@@ -95,9 +97,9 @@ Arrow.prototype.draw = function(context, position, centered, angle) {
 	// Draw arrow head
 	context.beginPath();
 	context.moveTo(s, 0);
-	context.lineTo(s - 8,  4);
+	context.lineTo(s - 8, 4);
 	context.lineTo(s - 8, -4);
-	context.lineTo(s, 0);
+	context.moveTo(s, 0);
 	context.fillStyle = this._stroke.style().html(context, position);
 	context.fill();
 	

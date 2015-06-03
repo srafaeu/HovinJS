@@ -87,10 +87,10 @@ Circle.prototype.stroke = function(stroke) {
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context
  * @param {Vector2|Point2} position A point or vector object to define the position of the object
- * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
+ * @param {boolean|Point2} pivot Boolean true to draw based on the center or false if is based on the top left or a Point2 object to define pivot point
  * @param {number|undefined} angle Rotation angle in radians on drawing circle
  */
-Circle.prototype.draw = function(context, position, centered, angle) {
+Circle.prototype.draw = function(context, position, pivot, angle) {
 	var p0 = new Point2(),
 		xf = position.x(),
 		yf = position.y(),
@@ -102,8 +102,10 @@ Circle.prototype.draw = function(context, position, centered, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	if (centered)
+	if (pivot === false) // draw centered as default
 		p0 = new Point2(hs, hs);
+	else if (pivot instanceof Point2)
+		p0 = new Point2(pivot.x(), pivot.y());
 
 	context.beginPath();
     context.arc(p0.x(), p0.y(), this._radius, 0, Math.PI * 2, false);

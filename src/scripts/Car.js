@@ -1,12 +1,12 @@
-function Car(position, color) {
-	this._body		= new Polygon(new Size(10, 20), 3, new Fill(color));
+function Car(position, angle, color) {
+	this._body		= new Polygon(new Size(50, 25), 3, new Fill(color));
 	this._position	= position;
-	this._velocity	= new Vector2.fromSizeAndAngle(1, 0);
-	this._angle		= 0;
+	this._angle		= angle || 0;
+	this._velocity	= new Vector2.fromSizeAndAngle(2, this._angle);
 	
 	this._mass		= 100.0;
-	this._maxForce	= 35.0;
-	this._maxSpeed	= 50.0;
+	this._maxForce	= 4.0;
+	this._maxSpeed	= 4.0;
 
 	
 }
@@ -15,27 +15,28 @@ inheritPrototype(Car, IVehicle);
  // http://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-seek--gamedev-849
  
 Car.prototype.update = function(timer, target) {
-	var accelSecs,
+	var acceleration,
 		forces	= new Vector2(),
-		gravity	= Vector2.fromSizeAndAngle(9.8, Angle.toRadians(90)),
 		time	= timer.totalElapsedTime() / 1000;
-		//time	= timer.currentElapsedTime() / 1000;
 	
-	forces.add(SteeringBehavior.seek(this, target.position()));
-	//forces.add(gravity);
+	//forces.add(SteeringBehavior.seek(this, target.position())); // OK
+	//forces.add(SteeringBehavior.flee(this, target.position(), 200)); // ERROR
+	//forces.add(SteeringBehavior.arrive(this, target.position(), 200)); // OK
+	//forces.add(SteeringBehavior.pursuit(this, target)); // UNTESTED
+	forces.add(SteeringBehavior.wander(this)); // UNTESTED
+	
+	
 	forces.truncate(this._maxSpeed);
 	
-	accelSecs = Vector2.multiply(Vector2.divide(forces, this._mass), time);
+	acceleration = Vector2.multiply(Vector2.divide(forces, this._mass), time);
 	
-	console.log(forces);
-	
-	this._velocity.add(accelSecs);
+	this._velocity.add(acceleration);
 	this._angle = this._velocity.angle();
 	this._position.add(this._velocity);
 }
 
 Car.prototype.draw = function(context) {
-	this._body.draw(context, this._position, this._velocity.angle());
+	this._body.draw(context, this._position, true, this._angle);
 }
 
 Car.prototype.position		= function(){ return this._position; };

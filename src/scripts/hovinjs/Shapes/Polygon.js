@@ -22,7 +22,7 @@
  * @param {Fill|Stroke|undefined} style2 Style for Stroke or Fill of the polygon
  */
 var Polygon = function(size, sides, style1, style2) {
-	this._sides		= (typeof(sides) == 'number') ? sides : 3;
+	this._sides = (typeof(sides) == 'number') ? sides : 3;
 	
 	if (size instanceof Size) 
 		this._size = size;
@@ -111,14 +111,15 @@ Polygon.prototype.__build = function() {
     var i, l, rotatedAngle, x, y,
 		w = this._size.width(),
 		h = this._size.height(),
-		angle = -Math.PI * ((1 / this._sides) - (1 / 2));
+		hw = this._size.width() / 2,
+		hh = this._size.height() / 2;
 	
 	this._points = [];
 	
 	for (i = 0, l = this._sides; i < l; ++i) {
-        rotatedAngle = angle + (i * 2 * Math.PI / this._sides);
-        x = (w * Math.cos(rotatedAngle));
-        y = (h * Math.sin(rotatedAngle));
+        rotatedAngle = (i * (2 * Math.PI)) / l;
+        x = (hw * Math.cos(rotatedAngle));
+        y = (hh * Math.sin(rotatedAngle));
 		
         this._points.push(new Point2(x, y));
     }
@@ -133,33 +134,35 @@ Polygon.prototype.__build = function() {
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Vector2|Point2} position A point or vector object to define the position of the object
- * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
+ * @param {boolean|Point2} pivot Boolean true to draw based on the center or false if is based on the top left or a Point2 object to define pivot point
  * @param {number|undefined} angle Rotation angle in radians on drawing polygon
  */
-Polygon.prototype.draw = function(context, position, centered, angle) {
-	var i, l, x0, y0,
+Polygon.prototype.draw = function(context, position, pivot, angle) {
+	var i, l,
+		p0 = new Point2(),
 		xf = position.x(),
-		yf = position.y();
-	
+		yf = position.y(),
+		w = this._size.width(),
+		h = this._size.height(),
+		hw = w / 2,
+		hh = h / 2;
+		
 	context.save();
 	context.translate(xf, yf);
 	
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	if (centered) {
-		x0 = -(w / 2);
-		y0 = -(h / 2);
-	} else {
-		x0 = 0;
-		y0 = 0;
-	}
+	if (pivot === false)
+		p0 = new Point2(hw, hh);
+	else if (pivot instanceof Point2)
+		p0 = new Point2(pivot.x(), pivot.y());
 	
 	context.beginPath();
-	context.moveTo(this._points[0].x() + x0, this._points[0].y() + y0);
+	context.moveTo(this._points[0].x() + p0.x(), this._points[0].y() + p0.y());
 	
 	for (i = 1, l = this._points.length; i < l; i++)
-		context.lineTo(this._points[i].x(), this._points[i].y());
+		context.lineTo(this._points[i].x() + p0.x(), this._points[i].y() + p0.y());
 	
 	context.closePath();
 	

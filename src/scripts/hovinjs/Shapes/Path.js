@@ -22,10 +22,12 @@
  */
 var Path = function(stroke, points) {
 	this._points = [];
+	this._size = new Size();
 	
-	if (points !== undefined && points instanceof Array)
+	if (points !== undefined && points instanceof Array) {
 		this._points = points;
-	
+		this._size = this.__getSize();
+	}
 	if (stroke !== undefined && stroke instanceof Stroke) {
 		this._stroke = stroke;
 	} else {
@@ -79,8 +81,10 @@ Path.prototype.stroke = function(stroke) {
  * @return {Path} Return a object reference
  */
 Path.prototype.add = function(point) {
-	if (point instanceof Point2)
+	if (point instanceof Point2) {
 		this._points.push(point);
+		this._size = this.__getSize();
+	}
 	return this;
 };
 
@@ -96,6 +100,9 @@ Path.prototype.insert = function (index, point) {
 		this._points.push(point);
 	else
 		this._points.splice(index, 0, point);
+	
+	this._size = this.__getSize();
+	
 	return this;
 };
 
@@ -119,39 +126,66 @@ Path.prototype.remove = function (index) {
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Vector2|Point2} position A point or vector object to define the position of the object
- * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
+ * @param {boolean|Point2} pivot Boolean true to draw based on the center or false if is based on the top left or a Point2 object to define pivot point
  * @param {number|undefined} angle Rotation angle in radians on drawing path
  */
-Path.prototype.draw = function(context, position, centered, angle) {
-	var x0, y0,
+Path.prototype.draw = function(context, position, pivot, angle) {
+	var i, l,
+		p0 = new Point2(),
 		xf = position.x(),
-		yf = position.y();
-	
+		yf = position.y(),
+		w = this._size.width(),
+		h = this._size.height(),
+		hw = w / 2,
+		hh = h / 2;
+		
 	context.save();
 	context.translate(xf, yf);
 	
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	if (centered) {
-		x0 = -(w / 2);
-		y0 = -(h / 2);
-	} else {
-		x0 = 0;
-		y0 = 0;
-	}
+	if (pivot === true)
+		p0 = new Point2(-hw, -hh);
+	else if (pivot instanceof Point2)
+		p0 = new Point2(pivot.x(), pivot.y());
 	
 	context.beginPath();
-	context.moveTo(x0, y0);
+	context.moveTo(p0.x(), p0.y());
 	
-	for (var i = 0; i < this._points.length; i++)
-		context.lineTo(this._points[i].x(), this._points[i].y());
+	for (i = 0, l = this._points.length; i < l; i++)
+		context.lineTo(this._points[i].x() + p0.x(), this._points[i].y() +  p0.y());
 	
 	if (this._stroke)
 		this._stroke.html(context, this._position);
 	
 	context.closePath();
 	context.restore();
+}
+
+/**
+ * Hidden method to get the size of path 
+ * @method __getSize
+ */
+Path.prototype.__getSize = function() {
+	var x, y,
+		minx = 1000,
+		miny = 1000,
+		maxx = -1000,
+		maxy = -1000;
+	
+	for (i = 0, l = this._points.length; i < l; i++) {
+		x = this._points[i].x();
+		y = this._points[i].y();
+		
+		if (minx > x) minx = x;
+		if (miny > y) miny = y;
+		
+		if (maxx < x) maxx = x;
+		if (maxy < y) maxy = y;
+	}
+	
+	return new Size(maxx - minx, maxy - miny)
 }
 
 
@@ -191,3 +225,4 @@ Path.prototype.toJson	= Path.prototype.serialize;
  * @return {string} Return a string JSON of the object
  */
 Path.prototype.toString	= Path.prototype.serialize;
+

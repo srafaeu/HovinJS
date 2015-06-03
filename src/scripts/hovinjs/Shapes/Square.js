@@ -19,7 +19,7 @@
  * @param {Fill|Stroke|undefined} style2 Style for Stroke or Fill of the square
  */
 var Square = function(size, style1, style2) {
-	this._size		= (typeof(size) == 'number') ? size : 1;
+	this._size = (typeof(size) == 'number') ? size : 1;
 	
 	if (style1 === undefined && style2 === undefined) {
 		throw "Cannot draw a square without both fill and stroke property";
@@ -90,8 +90,8 @@ Square.prototype.stroke = function(stroke) {
  * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {number|undefined} angle Rotation angle in radians on drawing square
  */
-Square.prototype.draw = function(context, position, centered, angle) {
-	var x0, y0,
+Square.prototype.draw = function(context, position, pivot, angle) {
+	var p0 = new Point2(),
 		xf = position.x(),
 		yf = position.y(),
 		s  = this._size,
@@ -103,15 +103,13 @@ Square.prototype.draw = function(context, position, centered, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	if (centered) {
-		x0 = -hs;
-		y0 = -hs;
-	} else {
-		x0 = 0;
-		y0 = 0;
-	}
+	if (pivot === true)
+		p0 = new Point2(-hs, -hs);
+	else if (pivot instanceof Point2)
+		p0 = new Point2(pivot.x(), pivot.y());
+	
 	context.beginPath();
-	context.rect(-(hs), -(hs), s, s);
+	context.rect(p0.x(), p0.y(), s, s);
 	
 	if (this._fill)
 		this._fill.html(context, position);

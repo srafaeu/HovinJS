@@ -88,15 +88,17 @@ Ellipse .prototype.stroke = function(stroke) {
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Vector2|Point2} position A point or vector object to define the position of the object
- * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
+ * @param {boolean|Point2} pivot Boolean true to draw based on the center or false if is based on the top left or a Point2 object to define pivot point
  * @param {number|undefined} angle Rotation angle in radians on drawing ellipse
  */
-Ellipse.prototype.draw = function(context, position, centered, angle) {
-	var x0, y0,
+Ellipse.prototype.draw = function(context, position, pivot, angle) {
+	var p0 = new Point2(),
 		xf = position.x(),
 		yf = position.y(),
-		w = this._size.width(),
-		h = this._size.height();
+		w  = this._size.width(),
+		h  = this._size.height(),
+		hw = w / 2,
+		hh = h / 2;
 	
 	context.save();
 	context.translate(xf, yf);
@@ -104,15 +106,12 @@ Ellipse.prototype.draw = function(context, position, centered, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	if (centered) {
-		x0 = -(w / 2);
-		y0 = -(h / 2);
-	} else {
-		x0 = 0;
-		y0 = 0;
-	}
+	if (pivot === true)
+		p0 = new Point2(-hw, -hh);
+	else if (pivot instanceof Point2)
+		p0 = new Point2(pivot.x(), pivot.y());
 	
-	this.__drawEllipse(context, x0, y0, w, h);
+	this.__drawEllipse(context, p0.x(), p0.y(), w, h);
 	
 	if (this._fill)
 		this._fill.html(context, position);

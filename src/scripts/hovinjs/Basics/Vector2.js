@@ -11,6 +11,7 @@
 	+	sizeSquare
 	+	angle
 	+	normalize
+	+	truncate
 	+	rotate
 	+	dot
 	+	angleBetween
@@ -137,6 +138,19 @@ Vector2.prototype.normalize = function () {
 };
 
 /**
+ * Truncate vector if size it's bigger than the parameter
+ * @method truncate
+ * @param {number} size Limit value to vector size
+ * @return {Vector2} Return a reference to the object
+ */
+Vector2.prototype.truncate = function(size) {
+	if (this.sizeSquare() > (size * size))
+		this.multiply(size / this.magnitude());
+	
+	return this;
+};
+
+/**
  * Rotate a angle from the current position
  * @method rotate
  * @param {number} angle Floating-point value of the angle for rotation in Radians
@@ -152,7 +166,7 @@ Vector2.prototype.rotate = function(angle) {
 	this._y = yvalue;
 	
 	return this;
-}
+};
 
 
 /* Relationship */
@@ -164,7 +178,7 @@ Vector2.prototype.rotate = function(angle) {
  */
 Vector2.prototype.dot = function(vector) {
 	return this._x * vector.x() + this._y * vector.y();
-}
+};
 
 /**
  * Calculate the angle between two vectors and return the value in Radians
@@ -183,7 +197,7 @@ Vector2.prototype.angleBetween = function(vector) {
 	angPi = Math.acos(dp);
 	
 	return this._y * vector.x() > this._x * vector.y() ? angPi*-1 : angPi;
-}
+};
 
 
 /* Default operations */
@@ -195,10 +209,62 @@ Vector2.prototype.angleBetween = function(vector) {
  */
 Vector2.prototype.clone = function() {
 	return new Vector2(this._x, this._y);
-}
+};
 
 
 /* Static */
+
+/**
+ * Sum two points
+ * @method add
+ * @param {Vector2} a A Vector2 object for operation
+ * @param {Vector2} b A Vector2 object for operation
+ * @return {Vector2} Return a new Vector2 resulting from the operation
+ */
+Vector2.add = function(a, b) {
+	var c = a.clone();
+	c.add(b);
+	return c;
+}
+
+/**
+ * Subtract two points
+ * @method add
+ * @param {Vector2} a A Vector2 object for operation
+ * @param {Vector2} b A Vector2 object for operation
+ * @return {Vector2} Return a new Vector2 resulting from the operation
+ */
+Vector2.subtract = function(a, b) {
+	var c = a.clone();
+	c.subtract(b);
+	return c;
+}
+
+/**
+ * Multiply a point by a scalar value and return the new point
+ * @method multiply
+ * @param {Vector2} a A Vector2 object for operation
+ * @param {number} scalar Number multiplied
+ * @return {Vector2} Return a new Vector2 resulting from the operation
+ */
+Vector2.multiply = function(a, scalar) {
+	var c = a.clone();
+	c.multiply(scalar);
+	return c;
+}
+
+/**
+ * Divide a point by a scalar value and return the new point
+ * @method divide
+ * @param {Vector2} a A Vector2 object for operation
+ * @param {number} scalar Number divided
+ * @return {Vector2} Return a new Vector2 resulting from the operation
+ */
+Vector2.divide = function(a, scalar) {
+	var c = a.clone();
+	c.divide(scalar);
+	return c;
+}
 
 /**
  * Create a vector by Size and Angle

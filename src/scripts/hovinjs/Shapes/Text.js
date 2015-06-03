@@ -105,11 +105,12 @@ Text.prototype.stroke = function(stroke) {
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Font} font Font object to define font used in the text
  * @param {Vector2|Point2} position A point or vector object to define the position of the object
- * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
+ * @param {boolean|Point2} pivot Boolean true to draw based on the center or false if is based on the top left or a Point2 object to define pivot point
  * @param {number|undefined} angle Rotation angle in radians on drawing text
  */
-Text.prototype.draw = function(context, font, position, centered, angle) {
-	var x0, y0,
+Text.prototype.draw = function(context, font, position, pivot, angle) {
+	var metrics, hh,
+		p0 = new Point2(),
 		xf = position.x(),
 		yf = position.y();
 	
@@ -122,22 +123,29 @@ Text.prototype.draw = function(context, font, position, centered, angle) {
 	context.font = font.html();
 	content.textAlign = this._alignment;
 	
-	if (centered) {
-		x0 = -(w / 2);
-		y0 = -(h / 2);
-	} else {
-		x0 = 0;
-		y0 = 0;
-	}
+	if (pivot instanceof Point2)
+		p0 = new Point2(pivot.x(), pivot.y());
 	
 	if (this._fill) {
 		context.fillStyle = this._fill.html(context, position);
-		context.fillText(this._text, x0, y0);
+		
+		metrics = context.measureText(this._text);
+		
+		if (pivot === true)
+			p0 = new Point2(-Math.floor(metrics.width / 2), (font.unit() == "px") ? (font.size() / 2) : 0);
+	
+		context.fillText(this._text, p0.x(), p0.y());
 	}
 	if (this._stroke) {
 		context.lineWidth	= this._stroke.width();
 		context.strokeStyle	= this._stroke.style().html(context);
-		context.strokeText(this._text, x0, y0);
+		
+		metrics = context.measureText(this._text);
+		
+		if (pivot === true)
+			p0 = new Point2(-Math.floor(metrics.width / 2), (font.unit() == "px") ? (font.size() / 2) : 0);
+		
+		context.strokeText(this._text, p0.x(), p0.y());
 	}
 	
 	context.restore();

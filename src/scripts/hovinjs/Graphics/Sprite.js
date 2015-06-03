@@ -89,19 +89,20 @@ Sprite.prototype.initialize = function() {
  * Draw the image in a specified position
  * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context
- * @param {boolean} centered True if the draw is based on the center or false if is based on the top left
  * @param {number|number[]} frame Array with row and cols in the spritesheet or index frame of sprite
  * @param {Point2|Vector2} position Position of image as Point2 or Vector2
+ * @param {boolean|Point2} pivot Boolean true to draw based on the center or false if is based on the top left or a Point2 object to define pivot point
  * @param {number} angle Angle for rotating image in Radians
  */
-Sprite.prototype.draw = function(context, centered, frame, position, angle) {
-	var x0, y0, sx, sy,
-		xf = position.x(),
-		yf = position.y(),
-		w = this._size.width(),
-		h = this._size.height(),
-		fw = this._frameSize.width(),
-		fh = this._frameSize.height();
+Sprite.prototype.draw = function(context, frame, position, pivot, angle) {
+	var sx, sy,
+		p0	= new Point2(),
+		xf	= position.x(),
+		yf	= position.y(),
+		w	= this._size.width(),
+		h	= this._size.height(),
+		fw	= this._frameSize.width(),
+		fh	= this._frameSize.height();
 	
 	if (frame instanceof Array) {
 		sx = frame[1] * fw;
@@ -117,15 +118,12 @@ Sprite.prototype.draw = function(context, centered, frame, position, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	if (centered) {
-		x0 = -(fw / 2);
-		y0 = -(fh / 2);
-	} else {
-		x0 = 0;
-		y0 = 0;
-	}
+	if (pivot === true)
+		p0 = new Point2(-(fw / 2), -(fh / 2));
+	else if (pivot instanceof Point2)
+		p0 = new Point2(pivot.x(), pivot.y());
 	
-	context.drawImage(this._file, sx, sy, fw, fh, x0, y0, fw, fh);
+	context.drawImage(this._file, sx, sy, fw, fh, p0.x(), p0.y(), fw, fh);
 	
 	context.restore();
 }
