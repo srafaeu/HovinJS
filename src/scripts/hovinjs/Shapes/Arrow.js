@@ -18,7 +18,7 @@
  * @param {Stroke} stroke Style for Stroke or Fill of the arrow
  */
 var Arrow = function(size, stroke) {
-	this._size		= (typeof(size) == 'number') ? size : 1;
+	this._size = (typeof(size) == 'number') ? size : 1;
 	
 	if (stroke !== undefined && stroke instanceof Stroke) {
 			this._stroke = stroke;
@@ -67,10 +67,11 @@ Arrow.prototype.stroke = function(stroke) {
  * @param {number|undefined} angle Rotation angle in radians on drawing arrow
  */
 Arrow.prototype.draw = function(context, position, centered, angle) {
-	var point0 = point0 = new Point2(),
+	var s,
+		p0 = new Point2(),
 		xf = position.x(),
 		yf = position.y(),
-		hs = (this._size / 2);
+		hs = this._size / 2;
 	
 	context.save();
 	context.translate(xf, yf);
@@ -79,11 +80,13 @@ Arrow.prototype.draw = function(context, position, centered, angle) {
 		context.rotate(angle);
 	
 	if (centered)
-		point0 = new Point2(-hs, 0);
+		p0 = new Point2(-hs, 0);
+	
+	s = this._size + p0.x();
 	
 	context.beginPath();
-	context.moveTo(point0.x(), point0.y());
-	context.lineTo(this._size - 4, 0);
+	context.moveTo(p0.x(), p0.y());
+	context.lineTo(s - 4, 0);
 	context.closePath();
 	
 	if (this._stroke)
@@ -91,10 +94,10 @@ Arrow.prototype.draw = function(context, position, centered, angle) {
 	
 	// Draw arrow head
 	context.beginPath();
-	context.moveTo(this._size, 0);
-	context.lineTo(this._size - 8,  4);
-	context.lineTo(this._size - 8, -4);
-	context.lineTo(this._size, 0);
+	context.moveTo(s, 0);
+	context.lineTo(s - 8,  4);
+	context.lineTo(s - 8, -4);
+	context.lineTo(s, 0);
 	context.fillStyle = this._stroke.style().html(context, position);
 	context.fill();
 	

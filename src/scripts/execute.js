@@ -18,14 +18,18 @@ var out, canvas, context,
 	fonts = [ new Font("time12px", "Times New Roman", 12, "px"), new Font("verd12pt", "Verdana", 20, "pt"), new Font("time1em", "Times New Roman", 1.0, "em") ],
 	//rects = [ { obj: new Rectangle(new Size(50, 100), new Fill(new Color("#990000"))), angle: 0 }, { obj: new Rectangle(new Vector2(300, 100), new Size(50, 50), new Fill(new Color("#009900"))), angle: 0 }, { obj: new Rectangle(new Vector2(500, 100), new Size(100, 50), new Fill(new Color("#000099"))), angle: 0 } ],
 	//ellis = [ { obj: new Ellipse(new Size(50, 100), new Fill(new Color("#990000"))), angle: 0 }, { obj: new Ellipse(new Vector2(300, 100), new Size(50, 50), new Fill(new Color("#009900"))), angle: 0 }, { obj: new Ellipse(new Vector2(500, 100), new Size(100, 50), new Fill(new Color("#000099"))), angle: 0 } ],
-	//circs = [ { obj: new Circle(50, new Fill(new Color("#990000"))), angle: 0 }, { obj: new Circle(new Vector2(300, 100), 25, new Fill(new Color("#009900"))), angle: 0 }, { obj: new Circle(new Vector2(500, 100), 100, new Fill(new Color("#000099"))), angle: 0 } ],
+	circs = [
+		{ obj: new Circle( 50, new Fill(red)), position: new Vector2(100, 100), centered: false, angle: 0 },
+		{ obj: new Circle( 25, new Fill(green)), position: new Vector2(300, 100), centered: true, angle: 0 },
+		{ obj: new Circle(100, new Fill(blue)), position: new Vector2(500, 100), centered: true, angle: 0 }
+	],
 	//squas = [ { obj: new Square(50, new Fill(new Color("#990000"))), angle: 0 }, { obj: new Square(new Vector2(300, 100), 25, new Fill(new Color("#009900"))), angle: 0 }, { obj: new Square(new Vector2(500, 100), 100, new Fill(new Color("#000099"))), angle: 0 } ],
 	//polys = [ { obj: new Polygon(new Size(50, 50), 3, new Fill(new Color("#990000"))), angle: 0 }, { obj: new Polygon(new Vector2(300, 100), new Size(50, 50), 5, new Fill(new Color("#009900"))), angle: 0 }, { obj: new Polygon(new Vector2(500, 100), 100, 10, new Fill(new Color("#000099"))), angle: 0 } ],
 	//paths = [ { obj: new Path(new Stroke(1, new Color("#990000")), [ new Point2(10, 50), new Point2(20, 0), new Point2(30, 50), new Point2(40, 0)]), angle: 0 }, { obj: new Path(new Vector2(300, 100), new Stroke(2, new Color("#009900")), [ new Point2(50, 0), new Point2(0, 50), new Point2(50, 50)]), angle: 0 }, { obj: new Path(new Vector2(500, 100), new Stroke(5, new Color("#000099")), [ new Point2(-20, 40), new Point2(20, 40), new Point2(0, 0)]), angle: 0 } ],
 	arrws = [
-		{ obj: new Arrow(50, new Stroke(1, red)), position: new Vector2(100, 100), angle: 0 },
-		{ obj: new Arrow(25, new Stroke(1, green)), position: new Vector2(300, 100), angle: 0 },
-		{ obj: new Arrow(100, new Stroke(1, blue)), position: new Vector2(500, 100), angle: 0 }
+		{ obj: new Arrow( 50, new Stroke(1, red)), position: new Vector2(100, 100), centered: false, angle: 0 },
+		{ obj: new Arrow( 25, new Stroke(1, green)), position: new Vector2(300, 100), centered: true, angle: 0 },
+		{ obj: new Arrow(100, new Stroke(1, blue)), position: new Vector2(500, 100), centered: true, angle: 0 }
 	],
 	//texts = [ { obj: new Text("Abc", Text.AlignType.ALIGN_LEFT, new Fill(new Color("#990000"))), position: , angle: 0 }, { obj: new Text(new Vector2(100, 200), "123", Text.AlignType.ALIGN_CENTER, new Stroke(1, new Color("#009900"))), angle: 0 }, { obj: new Text(new Vector2(100, 300), "END", Text.AlignType.ALIGN_RIGHT, new Fill(new Color("#000099"))), angle: 0 } ],
 	carR = new Car(new Vector2(50, 50), red),
@@ -62,17 +66,19 @@ function loop() {
 }
 
 function update() {
-	drawShapes(arrws);
+	//circs[0].angle += ONE_RADIANS;
+	//circs[1].angle += ONE_RADIANS;
+	//circs[2].angle += ONE_RADIANS;
 }
 
 function draw() {
 	//drawShapes(rects);
 	//drawShapes(ellis);
-	//drawShapes(circs);
+	drawShapes(circs);
 	//drawShapes(squas);
 	//drawShapes(polys);
 	//drawShapes(paths);
-	drawShapes(arrws);
+	//drawShapes(arrws);
 	//drawTexts(texts);
 }
 
@@ -94,7 +100,7 @@ function drawCars() {
 function drawShapes(objects) {
 	var i = 0, l = 0;
 	for (i = 0, l = objects.length; i < l; i++)
-		objects[i].obj.draw(context, objects[i].angle);
+		objects[i].obj.draw(context, objects[i].position, objects[i].centered, objects[i].angle);
 }
 
 function drawTextures(objects, current, total) {

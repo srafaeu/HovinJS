@@ -91,9 +91,10 @@ Circle.prototype.stroke = function(stroke) {
  * @param {number|undefined} angle Rotation angle in radians on drawing circle
  */
 Circle.prototype.draw = function(context, position, centered, angle) {
-	var x0, y0,
+	var p0 = new Point2(),
 		xf = position.x(),
-		yf = position.y();
+		yf = position.y(),
+		hs = this._radius;
 	
 	context.save();
 	context.translate(xf, yf);
@@ -101,22 +102,17 @@ Circle.prototype.draw = function(context, position, centered, angle) {
 	if (angle !== undefined)
 		context.rotate(angle);
 	
-	if (centered) {
-		x0 = 0;
-		y0 = 0;
-	} else {
-		x0 = this._radius;
-		y0 = this._radius;
-	}
-	
+	if (centered)
+		p0 = new Point2(hs, hs);
+
 	context.beginPath();
-    context.arc(x0, y0, this._radius, 0, Math.PI * 2, false);
+    context.arc(p0.x(), p0.y(), this._radius, 0, Math.PI * 2, false);
 	
 	if (this._fill)
-		this._fill.html(context, this._position);
+		this._fill.html(context, position);
 	
 	if (this._stroke)
-		this._stroke.html(context, this._position);
+		this._stroke.html(context, position);
 	
 	context.restore();
 }
@@ -130,7 +126,7 @@ Circle.prototype.draw = function(context, position, centered, angle) {
  * @return {Circle} Return a new object reference
  */
 Circle.prototype.clone = function() {
-	return new Circle(this._position, this._radius, this._fill, this._stroke);
+	return new Circle(this._radius, this._fill, this._stroke);
 }
 
 
@@ -142,7 +138,7 @@ Circle.prototype.clone = function() {
  * @return {string} Return a string JSON of the object
  */
 Circle.prototype.serialize = function() {
-	return '{ "position":"' + this._position + '", "radius": ' + this._radius + ', "fill":' + this._fill + ', "stroke":' + this._stroke + ' }';
+	return '{ "radius": ' + this._radius + ', "fill":' + this._fill + ', "stroke":' + this._stroke + ' }';
 }
 
 /**
