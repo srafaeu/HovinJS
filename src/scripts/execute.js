@@ -29,8 +29,12 @@ var out, render,
 $(document).ready(function(){
 	render	= new Render(document.getElementById("myCanvas"), window.innerWidth - 4, window.innerHeight - 50);
 	
-	timer.start();
-	
+	initialize();
+	start();
+	loop();
+});
+
+function initialize() {
 	$("#pause").attr('href', 'javascript:void(0);').click(function() {
 		playing = false;
 		window.cancelAnimationFrame(process);
@@ -38,6 +42,7 @@ $(document).ready(function(){
 		$(this).hide();
 		$("#play").show();
 	}).show();
+	
 	$("#play").attr('href', 'javascript:void(0);').click(function() {
 		playing = true;
 		timer.start();
@@ -45,16 +50,16 @@ $(document).ready(function(){
 		$(this).hide();
 		$("#pause").show();
 	}).hide();
+	
 	$("#rewind").attr('href', 'javascript:void(0);').click(function() {
 		window.cancelAnimationFrame(process);
 		playing = true;
 		start();
 		loop();
 	});
-	start();
-	loop();
-});
-
+	
+	timer.start();
+}
 
 function start() {
 	rects = [
@@ -215,3 +220,8 @@ function drawTexts(objects) {
 	for (i = 0, l = objects.length; i < l; i++)
 		objects[i].obj.draw(render.context(), fonts[i], objects[i].position, objects[i].pivot, objects[i].angle);
 }
+
+
+
+
+

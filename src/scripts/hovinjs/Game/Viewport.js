@@ -14,17 +14,16 @@
 	+	serialize / toJSON / toString
 
 	::static
-	
 */
 
 /**
  * @classdesc Render objects on canvas
- * @class Render
+ * @class Viewport
  * @param {CanvasElement} Canvas element reference
  * @param {number} width A number of width value
  * @param {number} height A number of height value
  */
-var Render = function(canvas, width, height) {
+var Viewport = function(canvas, width, height) {
 	this._canvas	= canvas
 	this._context	= this._canvas.getContext('2d');
 	this._console	= new ConsoleHJS();
@@ -40,35 +39,35 @@ var Render = function(canvas, width, height) {
  * @method canvas
  * @return {CanvasElement} Return the canvas reference
  */
-Render.prototype.canvas = function() { return this._canvas; };
+Viewport.prototype.canvas = function() { return this._canvas; };
 
 /**
  * Get context referente
  * @method canvas
- * @return {CanvasRenderingContext2D} Return reference object to the Canvas Context 
+ * @return {CanvasViewportingContext2D} Return reference object to the Canvas Context 
  */
-Render.prototype.context = function() { return this._context; };
+Viewport.prototype.context = function() { return this._context; };
 
 /**
  * Get console referente
  * @method console
  * @return {ConsoleHJS} Return reference object to the Console used to game debug
  */
-Render.prototype.console = function() { return this._console; };
+Viewport.prototype.console = function() { return this._console; };
 
 /**
  * Get value width
  * @method width
  * @return {number} Return width of canvas
  */
-Render.prototype.width = function() { return this._canvas.width; };
+Viewport.prototype.width = function() { return this._canvas.width; };
 
 /**
  * Get value height
  * @method height
  * @return {number} Return height of canvas
  */
-Render.prototype.height = function() { return this._canvas.height; };
+Viewport.prototype.height = function() { return this._canvas.height; };
 
 
 /* Methods */
@@ -80,7 +79,7 @@ Render.prototype.height = function() { return this._canvas.height; };
  * @param {Point2|Vector2} position Position as Point2 or Vector2 for vector arrow start
  * @param {Color} color Color class for identify the arrow
  */
-Render.prototype.drawVector = function(vector, position, color) {
+Viewport.prototype.drawVector = function(vector, position, color) {
 	var arrow = new Arrow(vector.size(), new Stroke(1, color));
 	
 	arrow.draw(this._context, position, false, vector.angle());
@@ -93,7 +92,7 @@ Render.prototype.drawVector = function(vector, position, color) {
  * @param {Point2|Vector2} position Position as Point2 or Vector2 for rectangle start
  * @param {Color} color Color class for identify the rectangle
  */
-Render.prototype.drawBox = function(box, position, color) {
+Viewport.prototype.drawBox = function(box, position, color) {
 	var arrow = new Arrow(box.size(), new Stroke(1, color));
 	
 	arrow.draw(this._context, position, true, 0);
@@ -104,7 +103,7 @@ Render.prototype.drawBox = function(box, position, color) {
  * @method debug
  * @param {string} text String text to be printed on the console
  */
-Render.prototype.debug = function(text) {
+Viewport.prototype.debug = function(text) {
 	this._console.debugln(text);
 }
 
@@ -114,9 +113,9 @@ Render.prototype.debug = function(text) {
  * Resize the canvas
  * @param {number} width Width of the canvas
  * @param {number} height Height of the canvas
- * @return {Render} Return a object reference
+ * @return {Viewport} Return a object reference
  */
-Render.prototype.resize = function(width, height) {
+Viewport.prototype.resize = function(width, height) {
 	this._canvas.width	= width || window.innerWidth - 2;
 	this._canvas.height	= height || window.innerHeight - 2;
 	return this;
@@ -124,9 +123,9 @@ Render.prototype.resize = function(width, height) {
 
 /**
  * Clear the canvas window and debug console
- * @return {Render} Return a object reference
+ * @return {Viewport} Return a object reference
  */
-Render.prototype.clear = function() {
+Viewport.prototype.clear = function() {
 	this._context.clearRect(0, 0, this.width(), this.height());
 	this._console.clear();
 	return this;
@@ -140,19 +139,19 @@ Render.prototype.clear = function() {
  * @method serialize
  * @return {string} Return a string JSON of the object
  */
-Render.prototype.serialize = function() { return "{ width: " + this._width + ", height: " + this._height + " }"; }
+Viewport.prototype.serialize = function() { return "{ width: " + this._width + ", height: " + this._height + " }"; }
 
 /**
  * Serialize a object into a string
  * @method toJson
  * @return {string} Return a string JSON of the object
  */
-Render.prototype.toJson = Render.prototype.serialize;
+Viewport.prototype.toJson = Viewport.prototype.serialize;
 
 /**
  * Serialize a object into a string
  * @method toString
  * @return {string} Return a string JSON of the object
  */
-Render.prototype.toString = Render.prototype.serialize;
+Viewport.prototype.toString = Viewport.prototype.serialize;
 
