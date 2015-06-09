@@ -1,13 +1,14 @@
 body {
 	margin: 0;
 	padding: 0;
+	background-color: #000;
 }
 
 canvas {
 	background-color: #000;
 	background-repeat: repeat;
 	background-position: top left;
-	border: 1px solid #999;
+	border: 1px solid #1A1A1A;
 }
 
 .grid05 { background-image: url('images/grid05x05.png'); }
@@ -16,25 +17,45 @@ canvas {
 .grid50 { background-image: url('images/grid50x50.png'); }
 
 
-div.controller {
+ul.controller {
 	margin: 0;
-	padding: 3px;
+	padding: 6px 0;
+	overflow: hidden;
+	background-color: transparent;
+	background-repeat: repeat-x;
+	background-position: bottom left;
+	background-image: url('./images/bkgController.png');
 }
 
-a#play {
+ul.controller > li {
 	margin: 0;
+	padding: 0;
+	float: left;
+	list-style: none;
+}
+
+ul.controller > li > a {
+	margin: 0 5px;
 	padding: 0;
 	display: block;
 	width: 32px;
 	height: 32px;
 	background-color: transparent;
-	background-image: url('images/playpause.png');
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	text-indent: -1000px;
 	overflow: hidden;
+	cursor: pointer;
 }
 
-a#play.playing {
-	background-position: 0px -32px;
-}
+ul.colored > li > a { background-image: url('./images/btnColored32.png'); }
+ul.violet > li > a { background-image: url('./images/btnViolet32.png'); }
+
+ul.controller > li > a#play { background-position: 0px 0px; }
+ul.controller > li > a#play:hover { background-position: -32px 0px; }
+ul.controller > li > a#pause { background-position: 0px -32px; }
+ul.controller > li > a#pause:hover { background-position: -32px -32px; }
+ul.controller > li > a#stop { background-position: 0px -64px; }
+ul.controller > li > a#stop:hover { background-position: -32px -64px; }
+ul.controller > li > a#rewind { background-position: 0px -96px; }
+ul.controller > li > a#rewind:hover { background-position: -32px -96px; }

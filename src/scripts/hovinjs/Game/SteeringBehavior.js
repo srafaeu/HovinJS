@@ -1,11 +1,13 @@
 /* class SteeringBehavior */
 var SteeringBehavior = function() {};
 
-SteeringBehavior.wanderJitter	= 4.0;
+SteeringBehavior.wanderJitter	= 10;
 
-SteeringBehavior.wanderRadius	= 50.0;
+SteeringBehavior.wanderRadius	= 200.0;
 
-SteeringBehavior.wanderDistance	= 100.0;
+SteeringBehavior.wanderDistance	= 200.0;
+
+SteeringBehavior.wanderAngle = 0;
 
 // IVehicle vehicle, Vector2 target
 SteeringBehavior.seek = function(vehicle, target) {
@@ -77,36 +79,34 @@ SteeringBehavior.pursuit = function(pursuer, evader) {
 }
 
 // IVehicle vehicle
-SteeringBehavior.wander = function(vehicle) {
-	var circleCenter, displacement, targetLocal,
-		random = new Random();
-
+SteeringBehavior.wander = function(vehicle, timer) {
+	var wanderForce, circleCenter, displacement;
+	
 	circleCenter = vehicle.velocity().clone();
 	circleCenter.normalize();
 	circleCenter.multiply(SteeringBehavior.wanderDistance);
 	
-	displacement = Vector2.fromSizeAndAngle(SteeringBehavior.wanderRadius, Angle.toRadians(random.nextRangeInt(-90, 90)));
+	displacement = new Vector2();
+	//displacement.angle(SteeringBehavior.wanderAngle);
 	
-	//out.debugln(Angle.toRadians(random.nextRangeInt(0, 360)), true);
+	SteeringBehavior.wanderAngle += (random.nextRange(-1, 1) * SteeringBehavior.wanderJitter) - (SteeringBehavior.wanderJitter * 0.5);
+	//displacement.rotate(Angle.toRadians(random.nextRange(-1, 1) * SteeringBehavior.wanderJitter));
 	
-	targetLocal = Vector2.add(circleCenter, displacement);
+	wanderForce = Vector2.add(circleCenter, displacement);
 	
+	var disp, dist, circle, forc;
+	circle = new Circle(displacement.size(), new Stroke(1, new Color("#000099")));
+	disp = new Arrow(displacement.size(), new Stroke(1, new Color("#990000")));
+	dist = new Arrow(circleCenter.size(), new Stroke(1, new Color("#009900")))
+	forc = new Arrow(wanderForce.size(), new Stroke(1, new Color("#009999")))
 	
-	cir = new Circle(displacement.size(), new Stroke(1, new Color("#00AA00")));
-	dis = new Arrow(displacement.size(), new Stroke(1, new Color("#AA0000")));
-	wan = new Arrow(circleCenter.size(), new Stroke(1, new Color("#0000AA")));
-	tar = new Arrow(targetLocal.size(), new Stroke(1, new Color("#00AAAA")));
+	circle.draw(context, Vector2.add(vehicle.position(), circleCenter), true, 0);
+	disp.draw(context, Vector2.add(vehicle.position(), circleCenter), false, displacement.angle());
+	dist.draw(context, vehicle.position(), false, circleCenter.angle());
+	forc.draw(context, vehicle.position(), false, wanderForce.angle());
 	
-	cir.draw(context, Vector2.add(vehicle.position(), circleCenter), true, 0);
-	dis.draw(context, Vector2.add(vehicle.position(), circleCenter), false, displacement.angle());
-	wan.draw(context, vehicle.position(), false, circleCenter.angle());
-	tar.draw(context, vehicle.position(), false, targetLocal.angle());
-	
-	
-	
-	return targetLocal;
+	return wanderForce;
 }
-
 
 /** @interface IVehicle */
 var IVehicle = function() {}

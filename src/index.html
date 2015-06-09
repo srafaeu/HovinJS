@@ -40,14 +40,17 @@
 	
 	<script type="text/javascript" src="./scripts/hovinjs/Game/Timer.js"></script>
 	<script type="text/javascript" src="./scripts/hovinjs/Game/SteeringBehavior.js"></script>
+	<script type="text/javascript" src="./scripts/hovinjs/Game/Render.js"></script>
 	
 	<script type="text/javascript" src="./scripts/Car.js"></script>
 	<script type="text/javascript" src="./scripts/execute.js"></script>
 </head>
 <body>
-	<div class="controller">
-		<a id="play" class="playing">pause</a>
-	</div>
-	<canvas id="myCanvas" width="500" height="500" class="grid50"></canvas>
+	<ul class="controller colored">
+		<li><a id="play">play</a></li>
+		<li><a id="pause">pause</a></li>
+		<li><a id="rewind">rewind</a></li>
+	</ul>
+	<canvas id="myCanvas" width="500" height="500" class="grid25"></canvas>
 </body>
 </html>
