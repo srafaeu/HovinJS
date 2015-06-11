@@ -140,15 +140,15 @@ function loop() {
 function update() {
 	//out.debug(timer.currentElapsedTime() + " / " + timer.totalElapsedTime(), true);
 	
-	carR.update(timer, carG);
-	carG.update(timer);
-	carB.update(timer, carG);
+	//carR.update(timer, carG);
+	//carG.update(timer);
+	//carB.update(timer, carG);
 	
 	//updateRotation(rects, rttns);
 }
 
 function draw() {
-	drawCars();
+	//drawCars();
 	
 	//drawShapes(rects);
 	//drawShapes(ellis);

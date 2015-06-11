@@ -1,4 +1,28 @@
-/* class HovinJS */
+/*
+	Description
+	::public
+	+	get Canvas
+	+	get Context
+	+	get Console
+	+	get Width
+	+	get Height
+	+	drawVector
+	+	drawBox
+	+	debug
+	+	resize
+	+	clear
+	+	serialize / toJSON / toString
+
+	::static
+*/
+
+/**
+ * @classdesc Render objects on canvas
+ * @class HovinJS
+ * @param {string} id of canvas element
+ * @param {number} width A number of width value
+ * @param {number} height A number of height value
+ */
 var HovinJS = function(id, width, height, loader, starter, updater, drawer) {
 	var hvn = this;
 	

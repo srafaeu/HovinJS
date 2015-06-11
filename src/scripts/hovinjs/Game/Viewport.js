@@ -28,7 +28,8 @@ var Viewport = function(canvas, width, height) {
 	this._context	= this._canvas.getContext('2d');
 	this._console	= new ConsoleHJS();
 	
-	this.resize(width, height);
+	if (width != undefined && height != undefined)
+		this.resize(width, height);
 };
 
 

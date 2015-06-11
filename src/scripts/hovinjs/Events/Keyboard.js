@@ -94,6 +94,11 @@ Keyboard.prototype.clear = function() {
 	this._mappedKeys = new Object();
 }
 
+/**
+ * Clear all actived keys
+ * @method update
+ */
+Keyboard.prototype.update = Keyboard.prototype.clear;
 
 /* Enable keyboard */
 

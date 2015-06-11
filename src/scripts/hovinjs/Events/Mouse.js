@@ -128,6 +128,11 @@ Mouse.prototype.clear = function() {
 	this._currentTarget = undefined;
 }
 
+/**
+ * Clear all actived keys
+ * @method update
+ */
+Mouse.prototype.update = Mouse.prototype.clear;
 
 /* Enable mouse */
 
