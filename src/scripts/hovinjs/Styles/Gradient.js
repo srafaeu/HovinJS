@@ -1,18 +1,3 @@
-/*
-	Description
-	::public
-	+	get e set Start
-	+	get e set End
-	+	get e set Stop
-	+	addColor
-	+	removeColor
-	+	html
-	+	clone
-	+	serialize / toJSON / toString
-
-	::static
-*/
-
 /**
  * @classdesc Linear gradient color object with two or more steps
  * @class Gradient
@@ -31,7 +16,6 @@ var Gradient = function(start, end, stops) {
 
 /**
  * Get or set start position of gradient
- * @method start
  * @param {Point2} start (set) A point object to define the start gradient position relative to canvas (get) undefined to get the start value
  * @return {Gradient|Point2} (set) Return a object reference or (get) return the start gradient position relative to canvas
  */
@@ -43,7 +27,6 @@ Gradient.prototype.start = function(start) {
 
 /**
  * Get or set end position of gradient
- * @method end
  * @param {Point2} end (set) A point object to define the end gradient position relative to canvas (get) undefined to get the end value
  * @return {Gradient|Point2} (set) Return a object reference or (get) return the end gradient position relative to canvas
  */
@@ -55,7 +38,6 @@ Gradient.prototype.end = function(end) {
 
 /**
  * Get or set an GradientStop in the stops array
- * @method end
  * @param {number} index Index position on the stops array
  * @param {GradientStop[]|undefined} stop (set) A GradientStops to define gradient new color or (get) undefined to get the stop in the index position
  * @return {Gradient|Point2} (set) Return a object reference or (get) return the end gradient position relative to canvas
@@ -73,7 +55,6 @@ Gradient.prototype.stop = function(index, stop) {
 
 /**
  * Add a GradientStop to the gradient
- * @method addColor
  * @param {GradientStop|number} stop A GradientStop object or a number of a new stop position
  * @param {Color|undefined} color A color reference to a new stop position or undefined for add a GradientStop object
  */
@@ -86,7 +67,6 @@ Gradient.prototype.addColor = function (stop, color) {
 
 /**
  * Remove a GradientStop of the gradient
- * @method removeColor
  * @param {number} stop A GradientStop object or a number of a new stop position
  * @param {Color|undefined} color A color reference to a new stop position or undefined for GradientStop 
  */
@@ -99,7 +79,6 @@ Gradient.prototype.removeColor = function (index) {
 
 /**
  * Create a CanvasGradient to use as fill or stroke style
- * @method html
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Point2|Vector2|undefined} position Start position as Point2 or Vector2 for move current gradient or undefined to use current start position
  * @return {CanvasGradient} Return a CanvasGradient object to use as style
@@ -127,7 +106,6 @@ Gradient.prototype.html = function(context, startPosition) {
 
 /**
  * Clone the GradientStop to a new object
- * @method clone
  * @return {GradientStop} Return a new object reference
  */
 GradientStop.prototype.clone = function() {
@@ -139,7 +117,6 @@ GradientStop.prototype.clone = function() {
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 Gradient.prototype.serialize = function() {
@@ -148,14 +125,12 @@ Gradient.prototype.serialize = function() {
 
 /**
  * Serialize a object into a string
- * @method toJson
  * @return {string} Return a string JSON of the object
  */
 Gradient.prototype.toJson = Gradient.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 Gradient.prototype.toString = Gradient.prototype.serialize;

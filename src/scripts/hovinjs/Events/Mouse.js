@@ -1,27 +1,3 @@
-/*
-	Description
-	::public
-	+	get currentTarget
-	+	get x
-	+	get y
-	+	get globalX
-	+	get globalY
-	+	get button
-	+	get buttons
-	+	hasActiveKeys
-	+	addActiveKey
-	+	clear
-	+	enable
-	+	disable
-	+	up
-	+	down
-	+	press
-	+	clone
-	+	serialize / toJSON / toString
-
-	::static
-*/
-
 /**
  * @classdesc Mouse event handler
  * @class Mouse
@@ -40,7 +16,6 @@ var Mouse = function(targetWindow) {
 
 /**
  * Initialize mouse listener
- * @method initialize
  */
 Mouse.prototype.initialize = function() {
 	this.enable();
@@ -51,42 +26,36 @@ Mouse.prototype.initialize = function() {
 
 /**
  * Get the current mouse target
- * @method currentTarget
  * @return {object} Return the current mouse target
  */
 Mouse.prototype.currentTarget = function() { return this._currentTarget; };
 
 /**
  * Get the X coordinate of mouse in the target
- * @method x
  * @return {number} Return the coordinate X of the mouse
  */
 Mouse.prototype.x = function() { return this._position.x(); };
 
 /**
  * Get the Y coordinate of mouse in the target
- * @method y
  * @return {number} Return the coordinate Y of the mouse
  */
 Mouse.prototype.y = function() { return this._position.y(); };
 
 /**
  * Get the X coordinate of mouse in global screen
- * @method globalX
  * @return {number} Return the coordinate X of the mouse
  */
 Mouse.prototype.globalX = function() { return this._global.x(); };
 
 /**
  * Get the Y coordinate of mouse in global screen
- * @method globalY
  * @return {number} Return the coordinate Y of the mouse
  */
 Mouse.prototype.globalY = function() { return this._global.y(); };
 
 /**
  * Get the actived mouse button
- * @method button
  * @param {Mouse.Button} index Index of mouse button
  * @return {string} Return the button status
  */
@@ -94,14 +63,12 @@ Mouse.prototype.button = function(index) { return this._activeButtons[index]; };
 
 /**
  * Get the array of active buttons
- * @method buttons
  * @return {string[]} Return the array of active buttons
  */
 Mouse.prototype.buttons = function() { return this._activeButtons; };
 
 /**
  * Get if any button is actived
- * @method hasActiveButtons
  * @return {boolean} Return true if mouse has any actived button or false if its not
  */
 Mouse.prototype.hasActiveButtons = function() {	return this._activeButtons.length > 0; };
@@ -111,7 +78,6 @@ Mouse.prototype.hasActiveButtons = function() {	return this._activeButtons.lengt
 
 /**
  * Add an active mouse button
- * @method addActiveButton
  * @param {Mouse.Button} index Index of mouse button
  * @param {Mouse.Status} status Mouse button status type
  */
@@ -121,7 +87,6 @@ Mouse.prototype.addActiveButton = function(index, status) {
 
 /**
  * Clear all actived keys
- * @method clear
  */
 Mouse.prototype.clear = function() {
 	this._activeButtons = [Mouse.Status.NONE, Mouse.Status.NONE, Mouse.Status.NONE];
@@ -130,7 +95,6 @@ Mouse.prototype.clear = function() {
 
 /**
  * Clear all actived keys
- * @method update
  */
 Mouse.prototype.update = Mouse.prototype.clear;
 
@@ -138,7 +102,6 @@ Mouse.prototype.update = Mouse.prototype.clear;
 
 /**
  * Enable event listeners for mouse move, click down and up and double click
- * @method enable
  */
 Mouse.prototype.enable = function() {
 	var kbd = this;
@@ -151,7 +114,6 @@ Mouse.prototype.enable = function() {
 
 /**
  * Disable event listeners for mouse move, click down and up and double click
- * @method disable
  */
 Mouse.prototype.disable = function() {
 	removeEvent(this._target, 'mousemove');
@@ -165,7 +127,7 @@ Mouse.prototype.disable = function() {
 
 /**
  * Hidden method to handle mouse down event
- * @method __mousedown
+ * @private
  * @param {MouseEvent} Event dispatch by the listener
  */
 Mouse.prototype.__mousedown = function(event) {
@@ -175,7 +137,7 @@ Mouse.prototype.__mousedown = function(event) {
 
 /**
  * Hidden method to handle mouse up event
- * @method __mouseup
+ * @private
  * @param {MouseEvent} Event dispatch by the listener
  */
 Mouse.prototype.__mouseup = function(event) {
@@ -185,7 +147,7 @@ Mouse.prototype.__mouseup = function(event) {
 
 /**
  * Hidden method to handle mouse double click event
- * @method __mousedblclick
+ * @private
  * @param {MouseEvent} Event dispatch by the listener
  */
 Mouse.prototype.__mousedblclick = function(event) {
@@ -195,7 +157,7 @@ Mouse.prototype.__mousedblclick = function(event) {
 
 /**
  * Hidden method to handle mouse move event
- * @method __mousemove
+ * @private
  * @param {MouseEvent} Event dispatch by the listener
  */
 Mouse.prototype.__mousemove = function(event) {
@@ -211,7 +173,6 @@ Mouse.prototype.__mousemove = function(event) {
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 Mouse.prototype.serialize = function() {
@@ -220,14 +181,12 @@ Mouse.prototype.serialize = function() {
 
 /**
  * Serialize a object into a string
- * @method toJson
  * @return {string} Return a string JSON of the object
  */
 Mouse.prototype.toJson = Mouse.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 Mouse.prototype.toString = Mouse.prototype.serialize;

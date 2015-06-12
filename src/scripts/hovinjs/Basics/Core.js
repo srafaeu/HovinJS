@@ -101,14 +101,17 @@ function toString(obj) {
 		if (type == 'number') {
 			txt += '"' + k + '": '; // cabecalho
 			txt += obj[k].toString();
+			txt +=  ',';
 		} else if (type == 'object') {
 			txt += '"' + k + '": '; // cabecalho
-			txt += toString(obj[k]);
+			txt += obj[k];
+			//txt += toString(obj[k]);
+			txt +=  ',';
 		} else if (type == 'string') {
 			txt += '"' + k + '": '; // cabecalho
 			txt += '"' + obj[k] + '"';
+			txt +=  ',';
 		}
-		txt +=  ',';
 	}
 	txt = txt.substring(0, txt.length - 2);
 	txt += '}';

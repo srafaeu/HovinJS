@@ -1,15 +1,3 @@
-/*
-	Description
-	::public
-	+	get e set Width
-	+	get e set Style
-	+	html
-	+	clone
-	+	serialize / toJSON / toString
-
-	::static
-*/
-
 /**
  * @classdesc Fill style to canvas objects
  * @class Fill
@@ -29,7 +17,6 @@ var Fill = function(style) {
 
 /**
  * Get or set style for the Fill
- * @method start
  * @param {Color|Gradient|Pattern} style An element of style for HTML
  * @return {Fill|Color|Gradient|Pattern} (set) Return a object reference or (get) return the style of the Fill
  */
@@ -44,7 +31,6 @@ Fill.prototype.style = function(style) {
 
 /**
  * Execute an HTML construction of a Fill setting style
- * @method html
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Point2|Vector2} position Start position as Point2 or Vector2 for move current gradient
  */
@@ -58,7 +44,6 @@ Fill.prototype.html = function(context, position) {
 
 /**
  * Clone the Fill to a new object
- * @method clone
  * @return {Fill} Return a new object reference
  */
 Fill.prototype.clone = function() {
@@ -70,7 +55,6 @@ Fill.prototype.clone = function() {
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 Fill.prototype.serialize = function() {
@@ -79,14 +63,14 @@ Fill.prototype.serialize = function() {
 
 /**
  * Serialize a object into a string
- * @method toJson
  * @return {string} Return a string JSON of the object
  */
 Fill.prototype.toJson = Fill.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 Fill.prototype.toString = Fill.prototype.serialize;
+
+

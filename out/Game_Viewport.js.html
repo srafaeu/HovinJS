@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Game/Viewport.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Game/Viewport.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @classdesc Render objects on canvas
+ * @class Viewport
+ * @param {CanvasElement} Canvas element reference
+ * @param {number} width A number of width value
+ * @param {number} height A number of height value
+ */
+var Viewport = function(canvas, width, height) {
+	this._canvas	= canvas
+	this._context	= this._canvas.getContext('2d');
+	this._console	= new ConsoleHJS();
+	
+	if (width != undefined &amp;&amp; height != undefined)
+		this.resize(width, height);
+};
+
+
+/* Getters and setters */
+
+/**
+ * Get canvas reference
+ * @return {CanvasElement} Return the canvas reference
+ */
+Viewport.prototype.canvas = function() { return this._canvas; };
+
+/**
+ * Get context referente
+ * @return {CanvasViewportingContext2D} Return reference object to the Canvas Context 
+ */
+Viewport.prototype.context = function() { return this._context; };
+
+/**
+ * Get console referente
+ * @return {ConsoleHJS} Return reference object to the Console used to game debug
+ */
+Viewport.prototype.console = function() { return this._console; };
+
+/**
+ * Get value width
+ * @return {number} Return width of canvas
+ */
+Viewport.prototype.width = function() { return this._canvas.width; };
+
+/**
+ * Get value height
+ * @return {number} Return height of canvas
+ */
+Viewport.prototype.height = function() { return this._canvas.height; };
+
+
+/* Methods */
+
+/**
+ * Draw an arrow to demonstrate a Vector2 property using a position and color
+ * @param {Vector2} vector Vector reference to be drawed on the screen as arrow
+ * @param {Point2|Vector2} position Position as Point2 or Vector2 for vector arrow start
+ * @param {Color} color Color class for identify the arrow
+ */
+Viewport.prototype.drawVector = function(vector, position, color) {
+	var arrow = new Arrow(vector.size(), new Stroke(1, color));
+	
+	arrow.draw(this._context, position, false, vector.angle());
+}
+
+/**
+ * Draw an box to demonstrate a BoundingBox property using a position and color
+ * @param {BoundingBox} box BoundingBox reference to be drawed on the screen as rectangle
+ * @param {Point2|Vector2} position Position as Point2 or Vector2 for rectangle start
+ * @param {Color} color Color class for identify the rectangle
+ */
+Viewport.prototype.drawBox = function(box, position, color) {
+	var arrow = new Arrow(box.size(), new Stroke(1, color));
+	
+	arrow.draw(this._context, position, true, 0);
+}
+
+/**
+ * Print a string on the console and add a new line in the end of string
+ * @param {string} text String text to be printed on the console
+ */
+Viewport.prototype.debug = function(text) {
+	this._console.debugln(text);
+}
+
+
+/* Properties */
+/**
+ * Resize the canvas
+ * @param {number} width Width of the canvas
+ * @param {number} height Height of the canvas
+ * @return {Viewport} Return a object reference
+ */
+Viewport.prototype.resize = function(width, height) {
+	this._canvas.width	= width || window.innerWidth - 2;
+	this._canvas.height	= height || window.innerHeight - 2;
+	return this;
+}
+
+/**
+ * Clear the canvas window and debug console
+ * @return {Viewport} Return a object reference
+ */
+Viewport.prototype.clear = function() {
+	this._context.clearRect(0, 0, this.width(), this.height());
+	this._console.clear();
+	return this;
+}
+
+
+/* Serialization */
+
+/**
+ * Serialize a object into a string
+ * @return {string} Return a string JSON of the object
+ */
+Viewport.prototype.serialize = function() { return "{ width: " + this._width + ", height: " + this._height + " }"; }
+
+/**
+ * Serialize a object into a string
+ * @return {string} Return a string JSON of the object
+ */
+Viewport.prototype.toJson = Viewport.prototype.serialize;
+
+/**
+ * Serialize a object into a string
+ * @return {string} Return a string JSON of the object
+ */
+Viewport.prototype.toString = Viewport.prototype.serialize;
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Arrow.html">Arrow</a></li><li><a href="Circle.html">Circle</a></li><li><a href="Color.html">Color</a></li><li><a href="ConsoleHJS.html">ConsoleHJS</a></li><li><a href="Ellipse.html">Ellipse</a></li><li><a href="Fill.html">Fill</a></li><li><a href="Font.html">Font</a></li><li><a href="GameHovin.html">GameHovin</a></li><li><a href="Gradient.html">Gradient</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="Path.html">Path</a></li><li><a href="Pattern.html">Pattern</a></li><li><a href="Point2.html">Point2</a></li><li><a href="Polygon.html">Polygon</a></li><li><a href="Random.html">Random</a></li><li><a href="Rectangle.html">Rectangle</a></li><li><a href="Size.html">Size</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Square.html">Square</a></li><li><a href="Stroke.html">Stroke</a></li><li><a href="Text.html">Text</a></li><li><a href="Texture.html">Texture</a></li><li><a href="TextureManager.html">TextureManager</a></li><li><a href="Vector2.html">Vector2</a></li><li><a href="Viewport.html">Viewport</a></li><li><a href="World.html">World</a></li></ul><h3>Interfaces</h3><ul><li><a href="GameScreen.html">GameScreen</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__drawEllipse">__drawEllipse</a></li><li><a href="global.html#__getClassParameters">__getClassParameters</a></li><li><a href="global.html#__getSize">__getSize</a></li><li><a href="global.html#__loader">__loader</a></li><li><a href="global.html#_options">_options</a></li><li><a href="global.html#a">a</a></li><li><a href="global.html#add">add</a></li><li><a href="global.html#addColor">addColor</a></li><li><a href="global.html#addSprite">addSprite</a></li><li><a href="global.html#addTexture">addTexture</a></li><li><a href="global.html#addTextures">addTextures</a></li><li><a href="global.html#align">align</a></li><li><a href="global.html#alpha">alpha</a></li><li><a href="global.html#Angle">Angle</a></li><li><a href="global.html#angle">angle</a></li><li><a href="global.html#angleBetween">angleBetween</a></li><li><a href="global.html#b">b</a></li><li><a href="global.html#blue">blue</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#clone">clone</a></li><li><a href="global.html#color">color</a></li><li><a href="global.html#cols">cols</a></li><li><a href="global.html#create">create</a></li><li><a href="global.html#createStyle">createStyle</a></li><li><a href="global.html#currentElapsedTime">currentElapsedTime</a></li><li><a href="global.html#debug">debug</a></li><li><a href="global.html#debugln">debugln</a></li><li><a href="global.html#divide">divide</a></li><li><a href="global.html#dot">dot</a></li><li><a href="global.html#draw">draw</a></li><li><a href="global.html#end">end</a></li><li><a href="global.html#exit">exit</a></li><li><a href="global.html#file">file</a></li><li><a href="global.html#fill">fill</a></li><li><a href="global.html#frames">frames</a></li><li><a href="global.html#frameSize">frameSize</a></li><li><a href="global.html#g">g</a></li><li><a href="global.html#green">green</a></li><li><a href="global.html#height">height</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#html">html</a></li><li><a href="global.html#id">id</a></li><li><a href="global.html#initialize">initialize</a></li><li><a href="global.html#insert">insert</a></li><li><a href="global.html#isFinished">isFinished</a></li><li><a href="global.html#isLoaded">isLoaded</a></li><li><a href="global.html#load">load</a></li><li><a href="global.html#magnitude">magnitude</a></li><li><a href="global.html#multiply">multiply</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html">next</a></li><li><a href="global.html#nextInt">nextInt</a></li><li><a href="global.html#nextRange">nextRange</a></li><li><a href="global.html#nextRangeInt">nextRangeInt</a></li><li><a href="global.html#normalize">normalize</a></li><li><a href="global.html#paused">paused</a></li><li><a href="global.html#percent">percent</a></li><li><a href="global.html#point">point</a></li><li><a href="global.html#points">points</a></li><li><a href="global.html">pointToPixel</a></li><li><a href="global.html">pointToUnit</a></li><li><a href="global.html#r">r</a></li><li><a href="global.html#radius">radius</a></li><li><a href="global.html#red">red</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#removeColor">removeColor</a></li><li><a href="global.html#rotate">rotate</a></li><li><a href="global.html#rows">rows</a></li><li><a href="global.html">scale</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#sides">sides</a></li><li><a href="global.html#size">size</a></li><li><a href="global.html#sizeSquare">sizeSquare</a></li><li><a href="global.html#sprite">sprite</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#started">started</a></li><li><a href="global.html#stroke">stroke</a></li><li><a href="global.html#subtract">subtract</a></li><li><a href="global.html#text">text</a></li><li><a href="global.html#texture">texture</a></li><li><a href="global.html#ticks">ticks</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#toJson">toJson</a></li><li><a href="global.html">toPixel</a></li><li><a href="global.html#toRGB">toRGB</a></li><li><a href="global.html#toRGBA">toRGBA</a></li><li><a href="global.html#toString">toString</a></li><li><a href="global.html#totalElapsedTime">totalElapsedTime</a></li><li><a href="global.html#totalLoaded">totalLoaded</a></li><li><a href="global.html">toUnit</a></li><li><a href="global.html#truncate">truncate</a></li><li><a href="global.html#unit">unit</a></li><li><a href="global.html#update">update</a></li><li><a href="global.html#width">width</a></li><li><a href="global.html#x">x</a></li><li><a href="global.html#y">y</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.1</a> on Fri Jun 12 2015 18:28:13 GMT-0300 (Hora oficial do Brasil)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

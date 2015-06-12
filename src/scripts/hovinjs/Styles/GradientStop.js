@@ -30,7 +30,6 @@ var GradientStop = function(percent, color) {
 
 /**
  * Get or set percent value
- * @method percent
  * @param {number|undefined} percent (set) Number of stop percent position to set the value or (get) undefined to get the stop percent position
  * @return {GradientStop|number} (set) Return a object reference or (get) return stop percent position
  */
@@ -42,7 +41,6 @@ GradientStop.prototype.percent = function(percent) {
 
 /**
  * Get or set color
- * @method color
  * @param {number|undefined} green (set) Number of channel green to set the value or (get) undefined to get the value
  * @return {GradientStop|Color} (set) Return a object reference or (get) return channel green value
  */
@@ -56,7 +54,6 @@ GradientStop.prototype.color = function(color) {
 
 /**
  * Clone the GradientStop to a new object
- * @method clone
  * @return {GradientStop} Return a new object reference
  */
 GradientStop.prototype.clone = function() {
@@ -67,7 +64,6 @@ GradientStop.prototype.clone = function() {
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 GradientStop.prototype.serialize = function() {
@@ -76,14 +72,12 @@ GradientStop.prototype.serialize = function() {
 
 /**
  * Serialize a object into a string
- * @method toJson
  * @return {string} Return a string JSON of the object
  */
 GradientStop.prototype.toJson = GradientStop.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 GradientStop.prototype.toString	= GradientStop.prototype.serialize;

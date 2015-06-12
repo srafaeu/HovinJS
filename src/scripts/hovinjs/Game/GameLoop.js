@@ -1,19 +1,20 @@
 /*
 	Description
 	::public
-	+	get Canvas
-	+	get Context
-	+	get Console
-	+	get Width
-	+	get Height
-	+	drawVector
-	+	drawBox
-	+	debug
-	+	resize
-	+	clear
-	+	serialize / toJSON / toString
+		initialize
+		loop
+		load
+		start
+		execute
+		pause
+		unpause
+		exit
+		
+		serialize / toJSON / toString
 
 	::static
+		
+	
 */
 /**
  * @classdesc Simple game loop
@@ -21,13 +22,11 @@
  * @param {string} id of canvas element
  * @param {function} load Method executed in the load game loop
  * @param {function} start Method executed in the start game loop
- * @param {function} wait Method executed in the wait game loop
- * @param {function} pause Method executed in the pause game loop
  * @param {function} update Method executed in the update game loop
  * @param {function} draw Method executed in the draw game loop
  * @param {function} exit Method executed in the exit game loop
  */
-var GameLoop = function(id, load, start, wait, pause, update, draw, exit) {
+var GameLoop = function(id, load, start, update, draw, exit) {
 	var glp = this;
 	
 	this._id		= id;
@@ -41,8 +40,6 @@ var GameLoop = function(id, load, start, wait, pause, update, draw, exit) {
 	
 	this._load		= load || function() {};
 	this._start		= start || function() {};
-	this._wait		= wait || function() {};
-	this._pause		= pause || function() {};
 	this._update	= update || function() {};
 	this._draw		= draw || function() {};
 	this._exit		= exit || function() {};
@@ -66,67 +63,57 @@ GameLoop.prototype.initialize = function(width, height) {
 	this._keyboard.initialize();
 	this._mouse.initialize();
 	
-	this._state = GameLoop.State.STARTED;
+	this._state = GameLoop.State.STARTING;
 	
 	this.load();
-}
-
-GameLoop.prototype.load = function() {
-	this._load(this._textures); // HANDLER
 	
-	this._state = GameLoop.State.WAITING;
 	this.loop();
 }
 
+
+/* Main Loop */
 GameLoop.prototype.loop = function() {
 	this.clear();
-	
-	if (this._state == GameLoop.State.EXECUTING) {
-		this.update();
-		this.draw();
-	} else {
-		this.wait();
-	}
+	this.execute();
 	this.read();
 	this.queue();
 }
- 
-GameLoop.prototype.start = function() {
-	this._timer.start();
-	this._state = GameLoop.State.EXECUTING;
+
+
+/* Methods */
+
+GameLoop.prototype.load = function() {
+	this._state = GameLoop.State.WAITING;
 	
-	this._start(); // HANDLER
+	this._load(this._textures); // HANDLER
 }
 
-GameLoop.prototype.wait = function() {
-	this._wait(this._textures);  // HANDLER
+GameLoop.prototype.start = function() {
+	this._state = GameLoop.State.EXECUTING;
+	this._timer.start();
+	
+	this._start(this._state); // HANDLER
 }
 
-GameLoop.prototype.update = function() {
-	this._update(this._timer, this._keyboard, this._mouse);  // HANDLER
-}
- 
-GameLoop.prototype.draw = function() {
-	this._draw(this._timer, this._render);  // HANDLER
+GameLoop.prototype.execute = function() {
+	this._update(this._state, this._timer, this._keyboard, this._mouse);  // HANDLER
+	this._draw(this._state, this._timer, this._render);  // HANDLER
 }
 
 GameLoop.prototype.pause = function() {
-	this._timer.pause();
 	this._state = GameLoop.State.PAUSED;
-	this._pause(this._timer, this._render);  // HANDLER
+	this._timer.pause();
 }
 
 GameLoop.prototype.unpause = function() {
-	this._timer.unpause();
 	this._state = GameLoop.State.EXECUTING;
+	this._timer.unpause();
 }
 
 GameLoop.prototype.exit = function() {
 	this._state = GameLoop.State.EXITING;
-	this._exit(this._timer, this._render);  // HANDLER
+	this._exit(this._state, this._timer, this._render);  // HANDLER
 }
-
-
 
 
 /* Fixed methods */
@@ -183,7 +170,7 @@ GameLoop.prototype.toString = GameLoop.prototype.serialize;
 /**
  * Enum for gameloop state
  * @readonly
- * @enum {string}
+ * @enum {number}
  */
-GameLoop.State = { CREATED: 0, STARTED: 1, WAITING: 2, EXECUTING: 3, PAUSED: 4, EXITING: 5 };
+GameLoop.State = { CREATED: 0, STARTING: 1, WAITING: 2, EXECUTING: 3, PAUSED: 4, EXITING: 5 };
 

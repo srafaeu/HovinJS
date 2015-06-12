@@ -109,19 +109,19 @@ World.pointToUnit = function(point) {
  * @method serialize
  * @return {string} Return a string JSON of the object
  */
-Viewport.prototype.serialize = function() { return "{ pixel: " + World._pixel + ", unit: " + World._unit + " }"; }
+World.prototype.serialize = function() { return "{ pixel: " + World._pixel + ", unit: " + World._unit + " }"; }
 
 /**
  * Serialize a object into a string
  * @method toJson
  * @return {string} Return a string JSON of the object
  */
-Viewport.prototype.toJson = Viewport.prototype.serialize;
+World.prototype.toJson = World.prototype.serialize;
 
 /**
  * Serialize a object into a string
  * @method toString
  * @return {string} Return a string JSON of the object
  */
-Viewport.prototype.toString = Viewport.prototype.serialize;
+World.prototype.toString = World.prototype.serialize;
 

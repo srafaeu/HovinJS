@@ -6,7 +6,7 @@
 var ConsoleHJS = function(options) {
 	/**
 	 * Default options including id and style
-	 * @private {object}
+	 * @private
 	 */
 	var defaults = {
 		"id":				"consoleHovinJS",
@@ -30,7 +30,7 @@ var ConsoleHJS = function(options) {
 	
 	/**
 	 * Options in use defining id and style
-	 * @public {object}
+	 * @public
 	 */
 	this._options = defaults;
 	

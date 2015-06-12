@@ -1,22 +1,3 @@
-/*
-	Description
-	::public
-	+	get key
-	+	get keys
-	+	hasActiveKeys
-	+	addActiveKey
-	+	clear
-	+	enable
-	+	disable
-	+	up
-	+	down
-	+	press
-	+	clone
-	+	serialize / toJSON / toString
-
-	::static
-*/
-
 /**
  * @classdesc Keyboard event handler
  * @class Keyboard
@@ -33,7 +14,6 @@ var Keyboard = function(targetWindow) {
 
 /**
  * Initialize keyboard listener
- * @method initialize
  */
 Keyboard.prototype.initialize = function() {
 	this.enable();
@@ -44,7 +24,6 @@ Keyboard.prototype.initialize = function() {
 
 /**
  * Get the actived key
- * @method key
  * @param {string} key Name of key
  * @return {Key} Return the key reference
  */
@@ -56,15 +35,29 @@ Keyboard.prototype.key = function(key) {
 };
 
 /**
+ * Try if a key is actived and in a specified state
+ * @param {string} key Name of key
+ * @param {press} state State of key
+ * @return {Key} Return the key reference
+ */
+Keyboard.prototype.tryKey = function(key, state) {
+	var k;
+	if (this._mappedKeys[key.toLowerCase()] !== undefined) {
+		k = this._activeKeys[this._mappedKeys[key.toLowerCase()]];
+		return (k.status() == state) ? k : undefined;
+	}
+	
+	return undefined;
+};
+
+/**
  * Get the array of Active keys
- * @method keys
  * @return {Key[]} Return the array of active keys
  */
 Keyboard.prototype.keys = function() { return this._activeKeys; };
 
 /**
  * Get if any key is actived
- * @method hasActiveKeys
  * @return {boolean} Return true if keyboard has any actived key or false if its not
  */
 Keyboard.prototype.hasActiveKeys = function() {	return this._activeKeys.length > 0; };
@@ -74,20 +67,18 @@ Keyboard.prototype.hasActiveKeys = function() {	return this._activeKeys.length >
 
 /**
  * Add an active key
- * @method addActiveKey
  * @param {number} code Key code identifier
  * @param {string} name Name of key
  * @param {string} charcode Equivalent char value
  * @param {Key.Status} status Status of key between PRESS, DOWN and UP
  */
-Keyboard.prototype.addActiveKey = function(name, code, charcode, status) {
+Keyboard.prototype.addActiveKey = function(code, name, charcode, status) {
 	this._mappedKeys[name.toLowerCase()] = this._activeKeys.length;
 	this._activeKeys.push(new Key(code, name, charcode, status));
 }
 
 /**
  * Clear all actived keys
- * @method clear
  */
 Keyboard.prototype.clear = function() {
 	this._activeKeys = [];
@@ -96,7 +87,6 @@ Keyboard.prototype.clear = function() {
 
 /**
  * Clear all actived keys
- * @method update
  */
 Keyboard.prototype.update = Keyboard.prototype.clear;
 
@@ -104,23 +94,21 @@ Keyboard.prototype.update = Keyboard.prototype.clear;
 
 /**
  * Enable event listeners for key up, down and press
- * @method enable
  */
 Keyboard.prototype.enable = function() {
 	var kbd = this;
 	
-	addEvent(this._target, 'keyup', function(e) { kbd.__keyup(e) });
 	addEvent(this._target, 'keydown', function(e) { kbd.__keydown(e) });
+	addEvent(this._target, 'keyup', function(e) { kbd.__keyup(e) });
 	addEvent(this._target, 'keypress', function(e) { kbd.__keypress(e) });
 }
 
 /**
  * Disable event listeners for key up, down and press
- * @method disable
  */
 Keyboard.prototype.disable = function() {
-	removeEvent(this._target, 'keyup');
 	removeEvent(this._target, 'keydown');
+	removeEvent(this._target, 'keyup');
 	removeEvent(this._target, 'keypress');
 }
 
@@ -129,45 +117,48 @@ Keyboard.prototype.disable = function() {
 
 /**
  * Hidden method to handle keyup event
- * @method __keyup
+ * @private
  * @param {KeyboardEvent} Event dispatch by the listener
  */
-Keyboard.prototype.__keyup = function(event) { this.addActiveKey(event.key, event.keyCode, event.charCode, Key.Status.UP); }
+Keyboard.prototype.__keyup = function(event) {
+	this.addActiveKey(event.keyCode, event.code, event.charCode, Key.Status.UP);
+}
 
 /**
  * Hidden method to handle keydown event
- * @method __keydown
+ * @private
  * @param {KeyboardEvent} Event dispatch by the listener
  */
-Keyboard.prototype.__keydown = function(event) { this.addActiveKey(event.key, event.keyCode, event.charCode, Key.Status.DOWN); }
+Keyboard.prototype.__keydown = function(event) {
+	this.addActiveKey(event.keyCode, event.code, event.charCode, Key.Status.DOWN);
+}
 
 /**
  * Hidden method to handle keypress event
- * @method __keypress
+ * @private
  * @param {KeyboardEvent} Event dispatch by the listener
  */
-Keyboard.prototype.__keypress = function(event) { this.addActiveKey(event.key, event.keyCode, event.charCode, Key.Status.PRESS); }
+Keyboard.prototype.__keypress = function(event) {
+	this.addActiveKey(event.keyCode, event.code, event.charCode, Key.Status.PRESS);
+}
 
 
 /* Serialization */
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 Keyboard.prototype.serialize = function() { return "{ keys: " + this._activeKeys + " }"; }
 
 /**
  * Serialize a object into a string
- * @method toJson
  * @return {string} Return a string JSON of the object
  */
 Keyboard.prototype.toJson = Keyboard.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 Keyboard.prototype.toString = Keyboard.prototype.serialize;
@@ -182,7 +173,7 @@ Keyboard.prototype.toString = Keyboard.prototype.serialize;
  * @class Key
  * @param {number} code Key code identifier
  * @param {string} name Name of key
- * @param {string} charcode Equivalent char value
+ * @param {number} charcode Equivalent char value
  * @param {Key.Status} status Status of key between PRESS, DOWN and UP
  */
 var Key = function(code, name, charcode, status) {
@@ -197,38 +188,33 @@ var Key = function(code, name, charcode, status) {
 
 /**
  * Get the code of the key
- * @method code
  * @return {number} Return key code 
  */
-Key.prototype.code = function() { return this.code; };
+Key.prototype.code = function() { return this._code; };
 
 /**
  * Get the name of key
- * @method name
  * @return {string} Return the name of key
  */
-Key.prototype.name = function() { return this.name; };
+Key.prototype.name = function() { return this._name; };
 
 /**
  * Get the equivalent char value
- * @method charcode
- * @return {string} Return equivalent char value
+ * @return {number} Return equivalent char value
  */
-Key.prototype.charcode	= function() { return this.charcode; };
+Key.prototype.charcode = function() { return this._charcode; };
 
 /**
  * Get the status of key between PRESS, DOWN and UP
- * @method id
  * @return {Key.Status} Return status of key between PRESS, DOWN and UP
  */
-Key.prototype.status	= function() { return this.status; };
+Key.prototype.status = function() { return this._status; };
 
 
 /* Default operations */
 
 /**
  * Clone the key to a new object
- * @method clone
  * @return {Key} Return a new object reference
  */
 Key.prototype.clone = function() {
@@ -240,7 +226,6 @@ Key.prototype.clone = function() {
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 Key.prototype.serialize = function() {
@@ -249,14 +234,12 @@ Key.prototype.serialize = function() {
 
 /**
  * Serialize a object into a string
- * @method toJson
  * @return {string} Return a string JSON of the object
  */
 Key.prototype.toJson = Key.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 Key.prototype.toString = Key.prototype.serialize;

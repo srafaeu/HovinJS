@@ -1,0 +1,18 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc", "closure"]
+    },
+    "source": {
+		"include": [ "./src/scripts/hovinjs/Basics/ConsoleHJS.js", "./src/scripts/hovinjs/Basics/Angle.js", "./src/scripts/hovinjs/Basics/Point2.js", "./src/scripts/hovinjs/Basics/Random.js", "./src/scripts/hovinjs/Basics/Size.js", "./src/scripts/hovinjs/Basics/Vector2.js", "./src/scripts/hovinjs/Graphics/Texture.js", "./src/scripts/hovinjs/Graphics/Sprite.js", "./src/scripts/hovinjs/Graphics/TextureManager.js", "./src/scripts/hovinjs/Styles/Color.js", "./src/scripts/hovinjs/Styles/Font.js", "./src/scripts/hovinjs/Styles/GradientStop.js", "./src/scripts/hovinjs/Styles/Gradient.js", "./src/scripts/hovinjs/Styles/Pattern.js", "./src/scripts/hovinjs/Styles/Fill.js", "./src/scripts/hovinjs/Styles/Stroke.js", "./src/scripts/hovinjs/Shapes/Rectangle.js", "./src/scripts/hovinjs/Shapes/Ellipse.js", "./src/scripts/hovinjs/Shapes/Circle.js", "./src/scripts/hovinjs/Shapes/Square.js", "./src/scripts/hovinjs/Shapes/Polygon.js", "./src/scripts/hovinjs/Shapes/Path.js", "./src/scripts/hovinjs/Shapes/Arrow.js", "./src/scripts/hovinjs/Shapes/Text.js", "./src/scripts/hovinjs/Events/Keyboard.js", "./src/scripts/hovinjs/Events/Mouse.js", "./src/scripts/hovinjs/Game/Timer.js", "./src/scripts/hovinjs/Game/World.js", "./src/scripts/hovinjs/Game/Viewport.js", "./src/scripts/hovinjs/Game/GameScreen.js", "./src/scripts/hovinjs/GameHovin.js" ],
+		"exclude": [ "./src/scripts/hovinjs/Basics/Core.js" ],
+		"includePattern": ".+\\.js(doc)?$",
+		"excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": [],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    }
+}
+

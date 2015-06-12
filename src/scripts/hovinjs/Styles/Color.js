@@ -1,20 +1,3 @@
-/*
-	Description
-	::public
-	+	get e set Red
-	+	get e set Green
-	+	get e set Blue
-	+	get e set Alpha
-	+	toRGB
-	+	toRGBA
-	+	toHex
-	+	html
-	+	clone
-	+	serialize / toJSON / toString
-
-	::static
-*/
-
 /**
  * @classdesc Color with red, green, blue and alpha definitions
  * @class Color
@@ -34,7 +17,6 @@ var Color = function() {
 
 /**
  * Hidden method for getting red, green, blue and alpha values from different kind of parameters
- * @method __getClassParameters
  * @param {*} parameters All possible parameters defined on constructor
  * @return {object} Return a simple object with red, green, blue and alpha values
  */
@@ -113,7 +95,6 @@ Color.prototype.__getClassParameters = function(parameters) {
 
 /**
  * Get or set value red
- * @method red
  * @param {number|undefined} red (set) Number of channel r to set the value or (get) undefined to get the value
  * @return {Color|number} (set) Return a object reference or (get) return channel r value
  */
@@ -125,7 +106,6 @@ Color.prototype.red = function(red) {
 
 /**
  * Get or set value red
- * @method r
  * @param {number|undefined} red (set) Number of channel red to set the value or (get) undefined to get the value
  * @return {Color|number} (set) Return a object reference or (get) return channel red value
  */
@@ -133,7 +113,6 @@ Color.prototype.r = Color.prototype.red;
 
 /**
  * Get or set value green
- * @method green
  * @param {number|undefined} green (set) Number of channel green to set the value or (get) undefined to get the value
  * @return {Color|number} (set) Return a object reference or (get) return channel green value
  */
@@ -145,7 +124,6 @@ Color.prototype.green = function(green) {
 
 /**
  * Get or set value green
- * @method g
  * @param {number|undefined} green (set) Number of channel green to set the value or (get) undefined to get the value
  * @return {Color|number} (set) Return a object reference or (get) return channel green value
  */
@@ -153,7 +131,6 @@ Color.prototype.g = Color.prototype.green;
 
 /**
  * Get or set value blue
- * @method blue
  * @param {number|undefined} blue (set) Number of channel blue to set the value or (get) undefined to get the value
  * @return {Color|number} (set) Return a object reference or (get) return channel blue value
  */
@@ -165,7 +142,6 @@ Color.prototype.blue = function(blue) {
 
 /**
  * Get or set value blue
- * @method b
  * @param {number|undefined} blue (set) Number of channel blue to set the value or (get) undefined to get the value
  * @return {Color|number} (set) Return a object reference or (get) return channel blue value
  */
@@ -173,7 +149,6 @@ Color.prototype.b = Color.prototype.blue;
 
 /**
  * Get or set value alpha
- * @method alpha
  * @param {number|undefined} alpha (set) Number of channel alpha to set the value between 0 and 1 or (get) undefined to get the value
  * @return {Color|number} (set) Return a object reference or (get) return channel alpha value between 0 and 1
  */
@@ -185,7 +160,6 @@ Color.prototype.alpha = function(alpha) {
 
 /**
  * Get or set value alpha
- * @method a
  * @param {number|undefined} alpha (set) Number of channel alpha to set the value between 0 and 1 or (get) undefined to get the value
  * @return {Color|number} (set) Return a object reference or (get) return channel alpha value between 0 and 1
  */
@@ -196,7 +170,6 @@ Color.prototype.a = Color.prototype.alpha;
 
 /**
  * Return a color in string using rgba() format
- * @method toRGBA
  * @return {string} Return a string rgba of color
  */
 Color.prototype.toRGBA = function() {
@@ -205,7 +178,6 @@ Color.prototype.toRGBA = function() {
 
 /**
  * Return a color in string using rgb() format
- * @method toRGB
  * @return {string} Return a string rgb of color
  */
 Color.prototype.toRGB = function() {
@@ -214,7 +186,6 @@ Color.prototype.toRGB = function() {
 
 /**
  * Return a color in string using #000000 format
- * @method toHex
  * @return {string} Return a string #000000 of color
  */
 Color.prototype.toHex = function() {
@@ -231,7 +202,6 @@ Color.prototype.toHex = function() {
 
 /**
  * Return a color in string using #000000 format
- * @method html
  * @return {string} Return a string #000000 of color
  */
 Color.prototype.html = Color.prototype.toHex;
@@ -240,7 +210,6 @@ Color.prototype.html = Color.prototype.toHex;
 
 /**
  * Clone the color to a new object
- * @method clone
  * @return {Color} Return a new object reference
  */
 Color.prototype.clone = function() {
@@ -251,7 +220,6 @@ Color.prototype.clone = function() {
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 Color.prototype.serialize = function() {
@@ -260,14 +228,12 @@ Color.prototype.serialize = function() {
 
 /**
  * Serialize a object into a string
- * @method toJson
  * @return {string} Return a string JSON of the object
  */
 Color.prototype.toJson = Color.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 Color.prototype.toString = Color.prototype.serialize;
