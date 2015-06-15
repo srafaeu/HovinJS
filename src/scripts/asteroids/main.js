@@ -1,8 +1,15 @@
 var gm, game;
 
+var asteroids = [],
+	spaceship;
+
 $(document).ready(function(){
 	gm = new GameMain();
 	game = new GameHovin("gameview", gm);
+	
+	asteroids.push(new Asteroid(new Vector2(100, 100), Asteroid.Type.EARTH));
+	asteroids.push(new Asteroid(new Vector2(400, 400), Asteroid.Type.ICE));
+	asteroids.push(new Asteroid(new Vector2(800, 100), Asteroid.Type.ROCK));
 	
 	game.initialize(window.innerWidth - 4, window.innerHeight - 50);
 });
@@ -23,8 +30,10 @@ inheritPrototype(GameMain, GameScreen)
  * @param {TextureManager} Reference to the texture manager object
  */
 GameMain.prototype.load = function(textures) {
+	var i, l;
 	
-	
+	for (i = 0, l = asteroids.length; i < l; i++)
+		asteroids[i].initialize(textures);
 };
 
 /**
@@ -45,6 +54,7 @@ GameMain.prototype.start = function() {
  * @param {Mouse} mouse Manager of mouse events
  */
 GameMain.prototype.update = function(state, timer, keyboard, mouse) {
+	var i, l;
 	
 	switch (state) {
 		case GameHovin.State.EXECUTING:
@@ -54,6 +64,10 @@ GameMain.prototype.update = function(state, timer, keyboard, mouse) {
 			if (keyboard.tryKey(Key.KeyNames.KEY_BACKSPACE, Key.Status.UP) !== undefined) {
 				game.exit();
 			}
+	
+			for (i = 0, l = asteroids.length; i < l; i++)
+				asteroids[i].update(timer);
+					
 			break;
 		case GameHovin.State.WAITING:
 			
@@ -76,8 +90,12 @@ GameMain.prototype.update = function(state, timer, keyboard, mouse) {
  * @param {Viewport} render Render object reference of viewport
  */
 GameMain.prototype.draw = function(state, timer, render, keyboard, mouse) {
-	render.debug(keyboard.key(Key.KeyNames.KEY_SPACE));
-	render.debug(state);
+	//render.debug(keyboard.key(Key.KeyNames.KEY_SPACE));
+	//render.debug(state);
+	var i, l;
+	
+	for (i = 0, l = asteroids.length; i < l; i++)
+		asteroids[i].draw(render.context());
 };
 
 /**

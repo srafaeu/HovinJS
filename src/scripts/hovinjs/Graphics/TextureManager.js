@@ -1,21 +1,3 @@
-/*
-	Description
-	::public
-	-	get file
-	-	get width
-	-	get height
-	-	get isLoaded
-	-	get e set size
-	+	get e set frameSize
-	+	get cols
-	+	get rows
-	+	get frames
-	+	draw
-	+	clone
-	+	serialize / toJSON / toString
-
-	::static
-*/
 /**
  * @classdesc Manager for texture and sprite loaded dynamically
  * @class TextureManager
@@ -35,7 +17,6 @@ var TextureManager = function(loaded) {
 
 /**
  * Hidden method for each image callback after load
- * @method __loader
  * @param {Event} event Event reference of image loading process completed
  * @param {TextureManager} manager TextureManager reference used in the image loader
  * @param {string} type Type of event dispatch ('error', 'abort', 'load')
@@ -58,7 +39,6 @@ TextureManager.prototype.__loader = function(event, manager, type, texture) {
 
 /**
  * Add texture into the mananger
- * @method addTexture
  * @param {string} id String id to identify texture
  * @param {string} source File path
  * @param {Size} frameSize Size of each frame in the texture image
@@ -76,7 +56,6 @@ TextureManager.prototype.addTexture = function(id, source) {
 
 /**
  * Add group of textures into the mananger
- * @method addTextures
  * @param {object[]|array[]} textures Array of objects or array with the 2 elements (id, source) for each texture
  */
 TextureManager.prototype.addTextures = function(textures) {
@@ -95,7 +74,6 @@ TextureManager.prototype.addTextures = function(textures) {
 
 /**
  * Add sprite into the mananger
- * @method addSprite
  * @param {string} id String id to identify sprite
  * @param {string} source File path
  * @param {Size} frameSize Size of each frame in the Sprite image
@@ -113,7 +91,6 @@ TextureManager.prototype.addSprite = function(id, source, frameSize) {
 
 /**
  * Add group of sprites into the mananger
- * @method addTextures
  * @param {object[]|array[]} sprites Array of objects or array with the 2 elements (id, source, frameSize) for each sprite
  */
 TextureManager.prototype.addSprites = function(sprites) {
@@ -132,7 +109,6 @@ TextureManager.prototype.addSprites = function(sprites) {
 
 /**
  * Get the texture referenced by id
- * @method texture
  * @param {string} id Id for the texture
  * @return {Texture} Return a reference to the texture referenced by id
  */
@@ -145,7 +121,6 @@ TextureManager.prototype.texture = function(id) {
 
 /**
  * Get the sprite referenced by id
- * @method sprite
  * @param {string} id Id for the sprite
  * @return {Sprite} Return a reference to the sprite referenced by id
  */
@@ -153,7 +128,6 @@ TextureManager.prototype.sprite = TextureManager.prototype.texture;
 
 /**
  * Clear the textures and sprites on the manager
- * @method clear
  */
 TextureManager.prototype.clear = function() {
 	this._textures	= [];
@@ -165,21 +139,18 @@ TextureManager.prototype.clear = function() {
 
 /**
  * Get the number of textures and sprites in the manager
- * @method size
  * @return {number} Return number of textures and sprites in the manager
  */
 TextureManager.prototype.size = function() { return this._textures.length; };
 
 /**
  * Get the number of total texture loaded
- * @method totalLoaded
  * @return {number} Return number of total texture loaded
  */
 TextureManager.prototype.totalLoaded = function() { return this._total; };
 
 /**
  * Get if all textures and sprites are loaded
- * @method isFinished
  * @return {number} Return true if all textures and sprites are loaded and false if it's not
  */
 TextureManager.prototype.isFinished = function() { return (this._total == this._textures.length); };
@@ -189,7 +160,6 @@ TextureManager.prototype.isFinished = function() { return (this._total == this._
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 TextureManager.prototype.serialize = function() {
@@ -198,14 +168,12 @@ TextureManager.prototype.serialize = function() {
 
 /**
  * Serialize a object into a string
- * @method toJson
  * @return {string} Return a string JSON of the object
  */
 TextureManager.prototype.toJson = TextureManager.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 TextureManager.prototype.toString = TextureManager.prototype.serialize;

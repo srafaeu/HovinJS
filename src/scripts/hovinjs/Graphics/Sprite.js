@@ -1,21 +1,3 @@
-/*
-	Description
-	::public
-	-	get file
-	-	get width
-	-	get height
-	-	get isLoaded
-	-	get e set size
-	+	get e set frameSize
-	+	get cols
-	+	get rows
-	+	get frames
-	+	draw
-	+	clone
-	+	serialize / toJSON / toString
-
-	::static
-*/
 /**
  * @classdesc Sprite image loaded dynamically
  * @class Sprite
@@ -39,28 +21,24 @@ inheritPrototype(Sprite, Texture);
 
 /**
  * Get the size of image
- * @method frameSize
  * @return {Size} Return size of the image
  */
 Texture.prototype.frameSize = function() { return this._frameSize; };
 
 /**
  * Get the number of columns in the sprite
- * @method cols
  * @return {number} Return number of columns in the sprite
  */
 Sprite.prototype.cols = function() { return this._cols; };
 
 /**
  * Get the number of rows in the sprite
- * @method rows
  * @return {number} Return number of rows in the sprite
  */
 Sprite.prototype.rows = function() { return this._rows; };
 
 /**
  * Get the number of frames in the sprite
- * @method frames
  * @return {number} Return number of frames in the sprite
  */
 Sprite.prototype.frames = function() { return this._cols * this._rows; };
@@ -70,7 +48,6 @@ Sprite.prototype.frames = function() { return this._cols * this._rows; };
 
 /**
  * Initialize sprite after loaded
- * @method initialize
  */
 Sprite.prototype.initialize = function() {
 	this._size = new Size(this._file.width, this._file.height);
@@ -87,7 +64,6 @@ Sprite.prototype.initialize = function() {
 
 /**
  * Draw the image in a specified position
- * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context
  * @param {number|number[]} frame Array with row and cols in the spritesheet or index frame of sprite
  * @param {Point2|Vector2} position Position of image as Point2 or Vector2
@@ -133,7 +109,6 @@ Sprite.prototype.draw = function(context, frame, position, pivot, angle) {
 
 /**
  * Clone the sprite to a new object
- * @method clone
  * @return {Sprite} Return a new object reference
  */
 Sprite.prototype.clone = function() {
@@ -145,7 +120,6 @@ Sprite.prototype.clone = function() {
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 Sprite.prototype.serialize = function() {
@@ -161,7 +135,6 @@ Sprite.prototype.toJson	= Sprite.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 Sprite.prototype.toString	= Sprite.prototype.serialize;

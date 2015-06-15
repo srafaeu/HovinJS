@@ -1,19 +1,3 @@
-/*
-	Description
-	::public
-	+	get file
-	+	get width
-	+	get height
-	+	get isLoaded
-	+	get e set size
-	+	draw
-	+	clone
-	+	serialize / toJSON / toString
-
-	::static
-	
-*/
-
 /**
  * @classdesc Texture image loaded dynamically
  * @class Texture
@@ -43,21 +27,18 @@ var Texture = function(id, source, callback) {
 
 /**
  * Get Image DOM object reference
- * @method file
  * @return {HTMLImageElement} Return a reference to the Image DOM object
  */
 Texture.prototype.file = function() { return this._file; };
 
 /**
  * Get the size of image
- * @method size
  * @return {Size} Return size of the image
  */
 Texture.prototype.size = function() { return this._size; };
 
 /**
  * Get value width
- * @method width
  * @return {number} Return width value
  */
 Texture.prototype.width = function() {
@@ -66,7 +47,6 @@ Texture.prototype.width = function() {
 
 /**
  * Get value height
- * @method height
  * @return {number} Return height value
  */
 Texture.prototype.height = function(height) {
@@ -75,7 +55,6 @@ Texture.prototype.height = function(height) {
 
 /**
  * Get or set boolean indicate if image is loaded or not
- * @method isLoaded
  * @param {boolean|undefined} loaded (set) Set the load image status (get) undefined to get the status
  * @return {Texture|boolean} (set) Return a Texture object reference or (get) return if image is loaded or not
  */
@@ -90,7 +69,6 @@ Texture.prototype.isLoaded = function(loaded) {
 
 /**
  * Initialize texture after loaded
- * @method initialize
  */
 Texture.prototype.initialize = function() {
 	this._size = new Size(this._file.width, this._file.height);
@@ -101,7 +79,6 @@ Texture.prototype.initialize = function() {
 
 /**
  * Draw the image in a specified position
- * @method draw
  * @param {CanvasRenderingContext2D} context Reference object to the Canvas Context 
  * @param {Point2|Vector2} position Position of image as Point2 or Vector2
  * @param {boolean|Point2} pivot Boolean true to draw based on the center or false if is based on the top left or a Point2 object to define pivot point
@@ -136,7 +113,6 @@ Texture.prototype.draw = function(context, position, pivot, angle) {
 
 /**
  * Clone the texture to a new object
- * @method clone
  * @return {Texture} Return a new object reference
  */
 Texture.prototype.clone = function() {
@@ -148,7 +124,6 @@ Texture.prototype.clone = function() {
 
 /**
  * Serialize a object into a string
- * @method serialize
  * @return {string} Return a string JSON of the object
  */
 Texture.prototype.serialize = function() {
@@ -157,14 +132,12 @@ Texture.prototype.serialize = function() {
 
 /**
  * Serialize a object into a string
- * @method toJson
  * @return {string} Return a string JSON of the object
  */
 Texture.prototype.toJson	= Texture.prototype.serialize;
 
 /**
  * Serialize a object into a string
- * @method toString
  * @return {string} Return a string JSON of the object
  */
 Texture.prototype.toString	= Texture.prototype.serialize;
